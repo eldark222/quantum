@@ -54,20 +54,23 @@ unidades no SI, visualizações e testes automatizados.
 Entre as relações implementadas estão:
 
 - Poço infinito:
-  \[
+
+  $$
   \psi_n(x)=\sqrt{\frac{2}{L}}\sin\left(\frac{n\pi x}{L}\right),
   \qquad
   E_n=\frac{n^2\pi^2\hbar^2}{2mL^2}
-  \]
+  $$
 - Densidade de probabilidade:
-  \[
+
+  $$
   \rho(x)=|\psi(x)|^2
-  \]
+  $$
 - Difração e interferência em dupla fenda.
 - Relação de incerteza:
-  \[
+
+  $$
   \Delta x\,\Delta p\geq\frac{\hbar}{2}
-  \]
+  $$
 - Transmissão e reflexão em uma barreira de potencial.
 - Correlações de estados emaranhados e teste de CHSH.
 
