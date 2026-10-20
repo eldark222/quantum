@@ -22,14 +22,17 @@ Atualmente, a aplicação oferece:
 - Simulação de tunelamento quântico e transmissão através de barreiras.
 - Visualização de estados de qubit e operações de portas quânticas.
 - Exploração de correlações quânticas e da desigualdade de CHSH.
+- Módulos de álgebra linear para sistemas, matrizes, autovalores e
+  decomposição espectral 2×2.
+- Simulador visual dos eixos principais de matrizes simétricas reais.
 - Seções educacionais sobre aplicações da física quântica.
 - Glossário de conceitos, grandezas, símbolos e equações.
 - Conteúdo sobre metodologia, constantes físicas, fontes e limitações dos
   modelos.
 
-Os cálculos científicos ficam separados da interface em `src/core/physics`.
-Isso facilita a revisão das fórmulas, a reutilização dos modelos e a criação
-de testes independentes da apresentação visual.
+Os cálculos científicos ficam separados da interface em `src/core/physics` e
+`src/core/math`. Isso facilita a revisão das fórmulas, a reutilização dos
+modelos e a criação de testes independentes da apresentação visual.
 
 ## Propósito
 
@@ -139,7 +142,9 @@ npm run preview  # serve o build de produção localmente
 ```text
 src/
 ├── components/          # componentes reutilizáveis da interface
+├── core/math/           # álgebra linear e algoritmos matemáticos
 ├── core/physics/        # constantes, unidades e modelos científicos
+├── features/mathematics/# experiências interativas de matemática aplicada
 ├── features/education/  # aplicações, glossário e fontes
 ├── features/simulators/ # simuladores interativos
 ├── tests/               # testes dos modelos físicos
