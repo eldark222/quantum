@@ -24,6 +24,15 @@ export const CalculusSection: React.FC = () => {
     try { return { value: numericalDerivative(definition, method, point, step) }; }
     catch (error) { return { error: error instanceof Error ? error.message : 'Parâmetros inválidos.' }; }
   }, [definition, method, point, step]);
+  const comparisons = useMemo(() => (
+    (['forward', 'backward', 'central'] as DifferenceMethod[]).map((comparisonMethod) => {
+      try {
+        return { method: comparisonMethod, result: numericalDerivative(definition, comparisonMethod, point, step) };
+      } catch {
+        return { method: comparisonMethod, result: undefined };
+      }
+    })
+  ), [definition, point, step]);
   const samples = useMemo(() => {
     try { return sampleDerivative(kind, range.minimum, range.maximum, 81, step); }
     catch { return []; }
@@ -37,6 +46,18 @@ export const CalculusSection: React.FC = () => {
   const maxError = samples.length ? Math.max(...samples.map((sample) => sample.absoluteError)) : Number.NaN;
   const pointValue = result.value?.value ?? definition.evaluate(point);
   const localLine = result.value ? `M 0 ${yScale(pointValue - result.value.derivative * point).toFixed(2)} L ${WIDTH} ${yScale(pointValue + result.value.derivative * (range.maximum - point)).toFixed(2)}` : '';
+  const secant = result.value && result.value.stencil.length >= 2
+    ? `M ${xScale(result.value.stencil[0])} ${yScale(definition.evaluate(result.value.stencil[0]))} L ${xScale(result.value.stencil[result.value.stencil.length - 1])} ${yScale(definition.evaluate(result.value.stencil[result.value.stencil.length - 1]))}`
+    : '';
+  const errorSamples = useMemo(() => [1e-1, 3e-2, 1e-2, 3e-3, 1e-3, 3e-4, 1e-4, 3e-5, 1e-5].map((sampleStep) => (
+    (['forward', 'backward', 'central'] as DifferenceMethod[]).map((comparisonMethod) => {
+      try {
+        return numericalDerivative(definition, comparisonMethod, point, sampleStep).absoluteError;
+      } catch {
+        return Number.NaN;
+      }
+    })
+  )), [definition, point]);
   const reset = () => { setKind(DEFAULT_KIND); setMethod(DEFAULT_METHOD); setPoint(1); setStep(0.0001); };
 
   return (
@@ -73,8 +94,29 @@ export const CalculusSection: React.FC = () => {
         </div>
       </div>
       <ScientificCard title="Visualização local" subtitle={`${definition.equation}; a reta violeta é a linearização numérica em x = ${point.toFixed(3)}.`} icon={<Activity className="h-5 w-5" />} theoryContent={<div className="space-y-3"><MathView block math="f'(x)\\approx\\frac{f(x+h)-f(x-h)}{2h}" /><p>Progressiva e regressiva têm erro de truncamento de primeira ordem; a central tem segunda ordem para funções suaves. Passos excessivamente pequenos podem aumentar o erro de arredondamento.</p></div>}>
-        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60 p-2"><svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="min-w-[520px] w-full" role="img" aria-label={`Gráfico de ${definition.label}, derivada analítica e aproximação local`}><line x1="0" y1={yScale(0)} x2={WIDTH} y2={yScale(0)} stroke="#334155" /><path d={functionPath} fill="none" stroke="#22d3ee" strokeWidth="2.5" /><path d={derivativePath} fill="none" stroke="#a78bfa" strokeWidth="2.5" strokeDasharray="6 4" /><path d={localLine} fill="none" stroke="#f59e0b" strokeWidth="2" /><circle cx={xScale(point)} cy={yScale(pointValue)} r="4" fill="#f8fafc" /></svg></div>
-        <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-400"><span className="text-cyan-300">● f(x)</span><span className="text-violet-300">● f′(x) analítica</span><span className="text-amber-300">● linearização numérica</span><span>h = {step}</span><span>erro máximo = {Number.isFinite(maxError) ? maxError.toExponential(2) : '—'}</span></div>
+        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60 p-2"><svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="min-w-[520px] w-full" role="img" aria-label={`Gráfico de ${definition.label}, derivada analítica, secante e aproximação local`}><line x1="0" y1={yScale(0)} x2={WIDTH} y2={yScale(0)} stroke="#334155" /><path d={functionPath} fill="none" stroke="#22d3ee" strokeWidth="2.5" /><path d={derivativePath} fill="none" stroke="#a78bfa" strokeWidth="2.5" strokeDasharray="6 4" /><path d={secant} fill="none" stroke="#f97316" strokeWidth="2" strokeDasharray="3 3" /><path d={localLine} fill="none" stroke="#f59e0b" strokeWidth="2" /><circle cx={xScale(point)} cy={yScale(pointValue)} r="4" fill="#f8fafc" />{result.value?.stencil.map((stencilPoint) => <circle key={stencilPoint} cx={xScale(stencilPoint)} cy={yScale(definition.evaluate(stencilPoint))} r="3.5" fill="#f97316" />)}</svg></div>
+        <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-400"><span className="text-cyan-300">● f(x)</span><span className="text-violet-300">● f′(x) analítica</span><span className="text-orange-300">● secante do método</span><span className="text-amber-300">● linearização numérica</span><span>h = {step}</span><span>erro máximo = {Number.isFinite(maxError) ? maxError.toExponential(2) : '—'}</span></div>
+      </ScientificCard>
+      <ScientificCard title="Comparação e efeito do passo" subtitle="Todos os valores abaixo são recalculados pelo mesmo motor matemático." icon={<Activity className="h-5 w-5" />}>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[620px] text-left text-xs">
+            <thead className="border-b border-slate-800 text-slate-400"><tr><th className="p-2">Método</th><th className="p-2">Aproximação</th><th className="p-2">Referência</th><th className="p-2">Erro absoluto</th><th className="p-2">Ordem</th></tr></thead>
+            <tbody className="divide-y divide-slate-800/70 text-slate-300">{comparisons.map(({ method: comparisonMethod, result: comparison }) => <tr key={comparisonMethod}><td className="p-2">{METHOD_LABELS[comparisonMethod]}</td><td className="p-2 font-mono">{comparison?.derivative.toFixed(6) ?? 'Inválida'}</td><td className="p-2 font-mono">{comparison?.analytic.toFixed(6) ?? '—'}</td><td className="p-2 font-mono">{comparison?.absoluteError.toExponential(2) ?? '—'}</td><td className="p-2">{comparisonMethod === 'central' ? 'O(h²)' : 'O(h)'}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60 p-2">
+          <svg viewBox={`0 0 ${WIDTH} 180`} className="min-w-[520px] w-full" role="img" aria-label="Erro absoluto para diferentes passos numéricos">
+            <text x="8" y="18" fill="#94a3b8" fontSize="11">Erro absoluto por passo h (escala visual logarítmica)</text>
+            {([0, 1, 2] as number[]).map((methodIndex) => {
+              const valid = errorSamples.map((values, index) => ({ x: 40 + index * 70, error: values[methodIndex] })).filter((item) => Number.isFinite(item.error) && item.error > 0);
+              const maximum = Math.max(...valid.map((item) => item.error), 1e-16);
+              const minimum = Math.min(...valid.map((item) => item.error), maximum);
+              const y = (error: number) => 155 - (Math.log(error) - Math.log(minimum)) / Math.max(1, Math.log(maximum) - Math.log(minimum)) * 120;
+              return <polyline key={methodIndex} points={valid.map((item) => `${item.x},${y(item.error)}`).join(' ')} fill="none" stroke={['#22d3ee', '#f97316', '#a78bfa'][methodIndex]} strokeWidth="2" />;
+            })}
+          </svg>
+        </div>
+        <p className="mt-3 text-xs leading-relaxed text-slate-400">A tendência combina erro de truncamento e arredondamento de ponto flutuante; diminuir h não garante melhoria monótona.</p>
       </ScientificCard>
     </div>
   );

@@ -30,8 +30,13 @@ portanto um método regressivo próximo de zero pode ser rejeitado para `ln`.
 
 [`CalculusSection.tsx`](../../src/features/mathematics/CalculusSection.tsx)
 mostra a curva `f`, o valor no ponto, a derivada analítica e a linearização
-local baseada na derivada numérica. A linearização é uma aproximação local e
-não substitui a função original. O erro absoluto é
+local baseada na derivada numérica. A visualização também desenha a secante
+definida pelos pontos do stencil realmente usados pelo método selecionado e
+marca esses pontos no gráfico. A linearização é uma aproximação local e não
+substitui a função original. A tabela compara os três métodos no mesmo ponto e
+passo, exibindo aproximação, referência, erro absoluto e ordem de truncamento.
+O gráfico adicional mostra o erro absoluto em função de vários valores de `h`
+em escala logarítmica visual. O erro absoluto é
 `|f'_num - f'_analítica|`; o erro relativo é omitido quando a referência é
 zero ou numericamente insignificante.
 

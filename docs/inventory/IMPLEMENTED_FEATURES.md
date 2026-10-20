@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | Física | Poço infinito, dupla fenda, incerteza, tunelamento, superposição e CHSH | `src/core/physics/` e `src/tests/physics.test.ts` |
 | Matemática | Sistema linear 2×2, matriz 2×2, autovalores e espectro simétrico 2×2 | `src/core/math/` e `src/features/mathematics/` |
-| Cálculo | Diferenças progressiva, regressiva e central para seis funções catalogadas | `numericalDifferentiation.ts` e `CalculusSection.tsx` |
+| Cálculo | Diferenças progressiva, regressiva e central para seis funções catalogadas, com secante do stencil, tabela comparativa e gráfico de erro por passo | `numericalDifferentiation.ts` e `CalculusSection.tsx` |
 | Unidades | Conversões J/eV e m/nm com validação | `src/core/physics/units.ts` |
 
 ## Interface e conteúdo
