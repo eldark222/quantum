@@ -138,6 +138,15 @@ rejeição de ângulos não finitos.
 
 ## Verificações executadas
 
+## Derivação numérica
+
+`src/core/math/numericalDifferentiation.ts` implementa diferenças progressiva,
+regressiva e central, validando o domínio de cada ponto do stencil. O catálogo
+usa referências analíticas independentes para `x²`, `x³-x`, seno, cosseno,
+exponencial e logaritmo natural. Os testes verificam fórmulas, domínios,
+entradas inválidas e comparação numérica; a visualização declara o passo e
+separa a linearização local da função original.
+
 Nesta fase foram executados `npm test`, `npm run lint`, `npm run typecheck` e,
 após as correções finais, `npm run build`. O resultado final e qualquer aviso
 de empacotamento são reportados no relatório da fase; nenhuma validação

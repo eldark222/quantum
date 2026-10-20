@@ -17,12 +17,28 @@ import { solveLinearSystem2x2 } from '../core/math/linearSystem';
 import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../core/math/matrix2x2';
 import { analyzeEigenvalues2x2 } from '../core/math/eigen2x2';
 import { decomposeSymmetric2x2 } from '../core/math/spectral2x2';
-import { centralDifference, sampleDerivative } from '../core/math/numericalDifferentiation';
+import { centralDifference, getFunctionDefinition, numericalDerivative, sampleDerivative } from '../core/math/numericalDifferentiation';
 
 describe('Cálculo diferencial numérico', () => {
   it('aproxima derivadas conhecidas pela diferença central', () => {
     expect(centralDifference((x) => x * x, 2)).toBeCloseTo(4, 7);
     expect(centralDifference(Math.sin, 0)).toBeCloseTo(1, 7);
+  });
+
+  it('implementa as três fórmulas de diferenças finitas', () => {
+    const definition = getFunctionDefinition('quadratic');
+    expect(numericalDerivative(definition, 'forward', 2).derivative).toBeCloseTo(4.0001, 7);
+    expect(numericalDerivative(definition, 'backward', 2).derivative).toBeCloseTo(3.9999, 7);
+    expect(numericalDerivative(definition, 'central', 2).derivative).toBeCloseTo(4, 7);
+  });
+
+  it('cobre as funções do catálogo e respeita o domínio do logaritmo', () => {
+    expect(numericalDerivative(getFunctionDefinition('cubic-minus-linear'), 'central', 2).analytic).toBe(11);
+    expect(numericalDerivative(getFunctionDefinition('cosine'), 'central', 0).analytic).toBeCloseTo(0);
+    expect(numericalDerivative(getFunctionDefinition('exponential'), 'central', 0).analytic).toBe(1);
+    expect(numericalDerivative(getFunctionDefinition('logarithm'), 'central', 1).analytic).toBe(1);
+    expect(() => numericalDerivative(getFunctionDefinition('logarithm'), 'central', 0)).toThrow();
+    expect(() => numericalDerivative(getFunctionDefinition('logarithm'), 'backward', 0.1, 0.2)).toThrow();
   });
 
   it('compara amostras numéricas com a derivada analítica', () => {
