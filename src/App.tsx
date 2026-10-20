@@ -12,6 +12,7 @@ const EntanglementSimulator = lazy(() => import('./features/simulators/Entanglem
 const ApplicationsSection = lazy(() => import('./features/education/ApplicationsSection').then((module) => ({ default: module.ApplicationsSection })));
 const GlossarySection = lazy(() => import('./features/education/GlossarySection').then((module) => ({ default: module.GlossarySection })));
 const AboutSection = lazy(() => import('./features/education/AboutSection').then((module) => ({ default: module.AboutSection })));
+const LinearSystemSection = lazy(() => import('./features/mathematics/LinearSystemSection').then((module) => ({ default: module.LinearSystemSection })));
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('infinite-well');
@@ -36,6 +37,8 @@ export const App: React.FC = () => {
         return <GlossarySection />;
       case 'about':
         return <AboutSection />;
+      case 'linear-system':
+        return <LinearSystemSection />;
       default:
         return <InfiniteWellSimulator />;
     }

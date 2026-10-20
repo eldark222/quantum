@@ -71,9 +71,11 @@ O núcleo deve ser independente de React. A feature deve manter estado de
 controles, chamar o modelo com `useMemo` quando adequado e explicar hipóteses,
 unidades e limitações. Componentes comuns devem permanecer genéricos.
 
-Para matemática, a futura pasta `src/core/math` deve conter funções puras de
+Para matemática, a pasta `src/core/math` deve conter funções puras de
 álgebra linear, métodos numéricos ou transformadas que não conheçam física nem
 interface. Modelos físicos podem depender dessas funções, mas não o contrário.
+O primeiro módulo segue essa regra em `src/core/math/linearSystem.ts`, com a
+feature correspondente em `src/features/mathematics/LinearSystemSection.tsx`.
 
 ## 5. Conteúdo educacional
 

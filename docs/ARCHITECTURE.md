@@ -18,8 +18,10 @@ src/
 │   ├── common/                # MathView, cards, métricas e controles
 │   └── layout/                # Header e navegação principal
 ├── core/
+│   ├── math/                  # algoritmos matemáticos reutilizáveis
 │   └── physics/               # constantes, unidades e modelos independentes
 ├── features/
+│   ├── mathematics/           # experiências de matemática aplicada
 │   ├── education/             # aplicações, glossário e metodologia
 │   └── simulators/            # seis experiências interativas
 ├── tests/                     # testes dos modelos físicos
@@ -36,9 +38,12 @@ src/
 - **Física:** `core/physics` não depende de React. Cada arquivo concentra um
   modelo ou grupo de conversões relacionado: poço infinito, dupla fenda,
   incerteza, tunelamento, superposição, emaranhamento, constantes e unidades.
+- **Matemática:** `core/math` contém algoritmos puros reutilizáveis. O primeiro
+  módulo é `linearSystem.ts`, que resolve e classifica sistemas lineares 2×2.
 - **Features:** `features/simulators` adapta os modelos físicos para controles,
-  gráficos e interpretação. `features/education` mantém o conteúdo conceitual
-  e as referências apresentadas ao usuário.
+  gráficos e interpretação. `features/mathematics` apresenta conceitos
+  matemáticos aplicados. `features/education` mantém o conteúdo conceitual e as
+  referências apresentadas ao usuário.
 - **Testes:** `tests` verifica propriedades matemáticas e físicas dos modelos.
 
 ## Decisões arquiteturais
@@ -60,8 +65,8 @@ O fluxo recomendado é:
 
 ```text
 App/layout -> features -> components/common
-features   -> core/physics
-tests      -> core/physics
+features   -> core/math | core/physics
+tests      -> core/math | core/physics
 ```
 
 Os modelos em `core/physics` não devem importar componentes ou APIs do navegador.

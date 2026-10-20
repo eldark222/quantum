@@ -10,6 +10,7 @@ import {
   Cpu,
   BookMarked,
   Info,
+  Sigma,
   Menu,
   X,
 } from 'lucide-react';
@@ -23,7 +24,8 @@ export type TabId =
   | 'entanglement'
   | 'applications'
   | 'glossary'
-  | 'about';
+  | 'about'
+  | 'linear-system';
 
 interface HeaderProps {
   activeTab: TabId;
@@ -47,6 +49,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'applications', label: 'Aplicações', icon: <Cpu className="w-4 h-4" />, category: 'knowledge' },
   { id: 'glossary', label: 'Glossário', icon: <BookMarked className="w-4 h-4" />, category: 'knowledge' },
   { id: 'about', label: 'Sobre & Fontes', icon: <Info className="w-4 h-4" />, category: 'knowledge' },
+  { id: 'linear-system', label: 'Álgebra Linear', icon: <Sigma className="w-4 h-4" />, category: 'knowledge' },
 ];
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {

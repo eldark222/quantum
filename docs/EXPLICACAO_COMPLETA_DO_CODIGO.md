@@ -63,6 +63,18 @@ educacionais e para o GitHub.
   TeX em HTML/MathML por KaTeX. O conteúdo atual é fornecido pelo código; não
   deve receber texto arbitrário sem uma política de sanitização.
 
+### Primeiro módulo matemático
+
+[linearSystem.ts](../src/core/math/linearSystem.ts) é um módulo independente
+da interface para o sistema `ax + by = e`, `cx + dy = f`. A função
+`solveLinearSystem2x2` usa a regra de Cramer, calcula `Delta = ad - bc`,
+retorna `x`, `y` e resíduos quando há solução única, e classifica sistemas
+singulares como inconsistentes ou subdeterminados usando tolerância relativa.
+A feature
+[LinearSystemSection.tsx](../src/features/mathematics/LinearSystemSection.tsx)
+fornece entradas, interpretação, equações e um exemplo resolvido sem duplicar
+o cálculo no componente.
+
 ### Núcleo científico
 
 Os arquivos em [src/core/physics](../src/core/physics) não importam React,

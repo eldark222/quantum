@@ -49,7 +49,11 @@
 | `src/components/common/ParameterControl.tsx` | Slider/number input com limites e callback numérico. |
 | `src/components/common/ScientificCard.tsx` | Painel com teoria expansível e conteúdo da experiência. |
 
-## Núcleo de física
+## Núcleo matemático e físico
+
+| Arquivo | Símbolos principais | Consumidores |
+| --- | --- | --- |
+| `src/core/math/linearSystem.ts` | `solveLinearSystem2x2`, classificação e resíduos | `LinearSystemSection` e testes |
 
 | Arquivo | Símbolos principais | Consumidores |
 | --- | --- | --- |
@@ -99,4 +103,3 @@ core/physics -/-> React, DOM, Recharts
 
 `assets/`, `public/` e `dist/` contêm recursos estáticos ou artefatos de build;
 `node_modules/` é gerado por npm e não deve ser versionado.
-

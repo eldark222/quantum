@@ -13,6 +13,7 @@ import { simulateUncertainty } from '../core/physics/uncertainty';
 import { applyHadamardGate, calculateQubitState } from '../core/physics/superposition';
 import { calculateQuantumCorrelation, evaluateChshInequality } from '../core/physics/entanglement';
 import { calculateDoubleSlitIntensity, calculateDeBroglieWavelengthNm } from '../core/physics/doubleSlit';
+import { solveLinearSystem2x2 } from '../core/math/linearSystem';
 
 describe('Conversões de Unidades Físicas', () => {
   it('converte corretamente entre Joules e eV', () => {
@@ -240,6 +241,26 @@ describe('Emaranhamento Quântico e Desigualdade de Bell CHSH', () => {
     expect(chsh.sParameter).toBeGreaterThan(2.0);
     expect(chsh.sParameter).toBeCloseTo(2 * Math.SQRT2, 2);
     expect(chsh.violatesClassicalBound).toBe(true);
+  });
+
+  describe('Álgebra Linear — Sistemas 2x2', () => {
+    it('resolve um sistema determinado e produz resíduos nulos', () => {
+      const result = solveLinearSystem2x2({ a: 2, b: 1, c: 1, d: -1, e: 5, f: 1 });
+      expect(result.status).toBe('unique');
+      expect(result.x).toBeCloseTo(2, 12);
+      expect(result.y).toBeCloseTo(1, 12);
+      expect(result.residualX).toBeCloseTo(0, 12);
+      expect(result.residualY).toBeCloseTo(0, 12);
+    });
+
+    it('classifica retas paralelas e coincidentes', () => {
+      expect(solveLinearSystem2x2({ a: 1, b: 1, c: 2, d: 2, e: 1, f: 3 }).status).toBe('inconsistent');
+      expect(solveLinearSystem2x2({ a: 1, b: 1, c: 2, d: 2, e: 1, f: 2 }).status).toBe('underdetermined');
+    });
+
+    it('rejeita coeficientes não finitos', () => {
+      expect(() => solveLinearSystem2x2({ a: Number.NaN, b: 1, c: 1, d: 1, e: 1, f: 1 })).toThrow();
+    });
   });
 
   it('produz anticorrelação perfeita para eixos coincidentes', () => {
