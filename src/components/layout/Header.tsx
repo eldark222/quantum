@@ -14,6 +14,7 @@ import {
   Grid2X2,
   BrainCircuit,
   Orbit,
+  ChartSpline,
   Menu,
   X,
 } from 'lucide-react';
@@ -31,7 +32,8 @@ export type TabId =
   | 'linear-system'
   | 'matrix'
   | 'eigenvalues'
-  | 'spectral-simulator';
+  | 'spectral-simulator'
+  | 'calculus';
 
 interface HeaderProps {
   activeTab: TabId;
@@ -59,6 +61,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'matrix', label: 'Matrizes', icon: <Grid2X2 className="w-4 h-4" />, category: 'knowledge' },
   { id: 'eigenvalues', label: 'Autovalores', icon: <BrainCircuit className="w-4 h-4" />, category: 'knowledge' },
   { id: 'spectral-simulator', label: 'Simulador Espectral', icon: <Orbit className="w-4 h-4" />, category: 'knowledge' },
+  { id: 'calculus', label: 'Cálculo', icon: <ChartSpline className="w-4 h-4" />, category: 'knowledge' },
 ];
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {

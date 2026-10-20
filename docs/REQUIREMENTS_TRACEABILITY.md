@@ -10,6 +10,7 @@ Estados usados: **implementado e testado**, **parcial**, **pendente** e
 | MATH-003 | Autovalores e autovetores 2×2 | Matemática | `eigen2x2.ts`, `EigenvalueSection.tsx` | Implementado e testado | `physics.test.ts` | Diagonalização geral |
 | MATH-004 | Teorema espectral real 2×2 | Matemática | `spectral2x2.ts`, `SpectralSimulatorSection.tsx` | Implementado e testado | `physics.test.ts` | Projeções e dimensões maiores |
 | MATH-005 | Catálogo básico, cálculo e métodos numéricos | Matemática | Roadmap | Pendente | — | Criar modelos e testes por unidade |
+| MATH-006 | Derivação numérica de funções elementares | Matemática | `numericalDifferentiation.ts`, `CalculusSection.tsx` | Implementado e testado | `physics.test.ts` | Integração, limites e derivadas multivariáveis |
 | PHYS-001 | Poço infinito 1D | Física quântica | `core/physics/infiniteWell.ts` | Implementado e testado | `physics.test.ts` | Testes de UI |
 | PHYS-002 | Dupla fenda | Física quântica | `doubleSlit.ts` | Implementado e testado | `physics.test.ts` | Validação visual automatizada |
 | PHYS-003 | Incerteza | Física quântica | `uncertainty.ts` | Implementado e testado | `physics.test.ts` | Pacotes com momento médio |

@@ -93,6 +93,12 @@ reconstrução. [SpectralSimulatorSection.tsx](../src/features/mathematics/Spect
 apresenta esses eixos e a elipse transformada em uma visualização SVG escalada;
 essa escala é apenas gráfica e não altera os valores numéricos.
 
+O módulo [numericalDifferentiation.ts](../src/core/math/numericalDifferentiation.ts)
+implementa a diferença central `(f(x+h)-f(x-h))/(2h)` para funções elementares
+com derivadas analíticas de referência. A feature de cálculo amostra ambas as
+curvas, calcula erro absoluto e deixa explícito que a aproximação depende do
+passo `h = 10^-4`.
+
 ### Núcleo científico
 
 Os arquivos em [src/core/physics](../src/core/physics) não importam React,

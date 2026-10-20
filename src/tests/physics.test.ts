@@ -17,6 +17,26 @@ import { solveLinearSystem2x2 } from '../core/math/linearSystem';
 import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../core/math/matrix2x2';
 import { analyzeEigenvalues2x2 } from '../core/math/eigen2x2';
 import { decomposeSymmetric2x2 } from '../core/math/spectral2x2';
+import { centralDifference, sampleDerivative } from '../core/math/numericalDifferentiation';
+
+describe('Cálculo diferencial numérico', () => {
+  it('aproxima derivadas conhecidas pela diferença central', () => {
+    expect(centralDifference((x) => x * x, 2)).toBeCloseTo(4, 7);
+    expect(centralDifference(Math.sin, 0)).toBeCloseTo(1, 7);
+  });
+
+  it('compara amostras numéricas com a derivada analítica', () => {
+    const samples = sampleDerivative('quadratic', -3, 3, 41);
+    expect(samples).toHaveLength(41);
+    expect(Math.max(...samples.map((sample) => sample.absoluteError))).toBeLessThan(1e-7);
+  });
+
+  it('rejeita passo e domínio inválidos', () => {
+    expect(() => centralDifference(Math.sin, 0, 0)).toThrow();
+    expect(() => sampleDerivative('sine', 1, 1)).toThrow();
+    expect(() => sampleDerivative('sine', 0, 1, 1)).toThrow();
+  });
+});
 
 describe('Decomposição espectral de matrizes simétricas 2×2', () => {
   it('reconstrói a matriz a partir de QΛQᵀ', () => {

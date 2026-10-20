@@ -36,5 +36,5 @@ partículas idênticas, sistemas abertos e teoria quântica de campos.
 
 1. Adicionar exercícios verificáveis ao catálogo de álgebra linear existente.
 2. Implementar vetores, projeções e ortogonalidade com um modelo puro.
-3. Criar um módulo inicial de cálculo numérico com erro e convergência medidos.
+3. Expandir o módulo de cálculo para integrais, limites e derivadas multivariáveis.
 4. Ampliar testes de componentes e inspeções responsivas antes de novas áreas.

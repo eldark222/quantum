@@ -15,7 +15,8 @@
 
 ## Features
 
-- `src/features/mathematics/`: sistemas, matrizes, autovalores e simulador espectral.
+- `src/features/mathematics/`: sistemas, matrizes, autovalores, cálculo
+  diferencial e simulador espectral.
 - `src/features/simulators/`: seis simuladores quânticos preservados.
 - `src/features/education/`: aplicações, glossário e metodologia/fontes.
 

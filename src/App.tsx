@@ -16,6 +16,7 @@ const LinearSystemSection = lazy(() => import('./features/mathematics/LinearSyst
 const MatrixSection = lazy(() => import('./features/mathematics/MatrixSection').then((module) => ({ default: module.MatrixSection })));
 const EigenvalueSection = lazy(() => import('./features/mathematics/EigenvalueSection').then((module) => ({ default: module.EigenvalueSection })));
 const SpectralSimulatorSection = lazy(() => import('./features/mathematics/SpectralSimulatorSection').then((module) => ({ default: module.SpectralSimulatorSection })));
+const CalculusSection = lazy(() => import('./features/mathematics/CalculusSection').then((module) => ({ default: module.CalculusSection })));
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('infinite-well');
@@ -48,6 +49,8 @@ export const App: React.FC = () => {
         return <EigenvalueSection />;
       case 'spectral-simulator':
         return <SpectralSimulatorSection />;
+      case 'calculus':
+        return <CalculusSection />;
       default:
         return <InfiniteWellSimulator />;
     }
