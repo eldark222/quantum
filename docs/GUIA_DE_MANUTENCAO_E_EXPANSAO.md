@@ -86,6 +86,10 @@ determinante conceitualmente, mas mantém sua própria validação e classifica�
 de casos complexos e degenerados. A interface não apresenta autovetores reais
 quando os autovalores são complexos.
 
+O simulador espectral usa `src/core/math/spectral2x2.ts` apenas para matrizes
+simétricas reais. A visualização SVG é uma representação geométrica escalada;
+resíduos numéricos e autovalores exibidos continuam vindo do modelo puro.
+
 ## 5. Conteúdo educacional
 
 Conteúdo novo deve informar:

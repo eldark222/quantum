@@ -16,6 +16,30 @@ import { calculateDoubleSlitIntensity, calculateDeBroglieWavelengthNm } from '..
 import { solveLinearSystem2x2 } from '../core/math/linearSystem';
 import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../core/math/matrix2x2';
 import { analyzeEigenvalues2x2 } from '../core/math/eigen2x2';
+import { decomposeSymmetric2x2 } from '../core/math/spectral2x2';
+
+describe('Decomposição espectral de matrizes simétricas 2×2', () => {
+  it('reconstrói a matriz a partir de QΛQᵀ', () => {
+    const matrix = { a: 3, b: 1, c: 1, d: 2 };
+    const result = decomposeSymmetric2x2(matrix);
+    expect(result.eigenvalues[0]).toBeGreaterThan(result.eigenvalues[1]);
+    expect(result.residual).toBeLessThan(1e-12);
+    expect(result.eigenvectors[0].x * result.eigenvectors[1].x
+      + result.eigenvectors[0].y * result.eigenvectors[1].y).toBeCloseTo(0, 12);
+  });
+
+  it('usa a base canônica para uma matriz escalar', () => {
+    const result = decomposeSymmetric2x2({ a: 2, b: 0, c: 0, d: 2 });
+    expect(result.eigenvectors[0]).toEqual({ x: 1, y: 0 });
+    expect(result.eigenvectors[1]).toEqual({ x: -0, y: 1 });
+    expect(result.residual).toBe(0);
+  });
+
+  it('rejeita matrizes não simétricas e entradas não finitas', () => {
+    expect(() => decomposeSymmetric2x2({ a: 1, b: 2, c: 1, d: 1 })).toThrow(/simétrica/);
+    expect(() => decomposeSymmetric2x2({ a: Number.NaN, b: 0, c: 0, d: 1 })).toThrow();
+  });
+});
 
 describe('Álgebra linear: autovalores 2×2', () => {
   it('calcula autovalores e autovetores reais distintos', () => {

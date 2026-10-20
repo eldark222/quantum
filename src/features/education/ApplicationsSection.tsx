@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cpu, Zap, Microscope, Binary, Clock, Radio } from 'lucide-react';
+import { Cpu, Zap, Microscope, Binary, Clock, Radio, Sigma } from 'lucide-react';
 import { MathView } from '../../components/common/MathView';
 
 interface ApplicationItem {
@@ -73,6 +73,16 @@ const APPLICATIONS: ApplicationItem[] = [
     mechanism: 'Os spins nucleares dos átomos de hidrogênio (prótons) na água do corpo humano alinham-se na presença de um campo magnético intenso B0. Pulsos de radiofrequência na frequência de Larmor (ω0 = γ B0) excitam os spins. Ao relaxarem, emitem sinais de RF detectados por bobinas para reconstruir imagens tomográficas com resolução milimétrica sem radiação ionizante.',
     impact: 'Diagnóstico médico não-invasivo de tumores, lesões cerebrais, tecidos moles e doenças cardíacas.',
     equation: '\\omega_0 = \\gamma B_0, \\quad \\Delta E = \\hbar \\gamma B_0',
+  },
+  {
+    id: 'spectral-decomposition',
+    title: 'Análise de Dados e Controle',
+    category: 'Matemática Aplicada',
+    icon: <Sigma className="w-5 h-5 text-fuchsia-400" />,
+    principle: 'Autovalores, autovetores e decomposição espectral',
+    mechanism: 'Matrizes simétricas reais podem ser escritas como A = QΛQᵀ. Essa mudança para eixos ortogonais separa direções independentes de uma transformação e é a base de análise de componentes principais, vibrações normais e muitos métodos de controle.',
+    impact: 'Reduz problemas multivariados a coordenadas principais, ajudando a identificar padrões em dados, modos de vibração e respostas dominantes de sistemas lineares.',
+    equation: 'A = Q\\Lambda Q^T, \\quad Q^TQ = I',
   },
 ];
 

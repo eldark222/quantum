@@ -173,6 +173,12 @@ export const AboutSection: React.FC = () => {
           <li>
             <strong className="text-white">NIST Physics Laboratory (2022).</strong> <em>CODATA Internationally Recommended 2022 Values of the Fundamental Physical Constants</em>. National Institute of Standards and Technology.
           </li>
+          <li>
+            <strong className="text-white">Strang, G. (2016).</strong> <em>Introduction to Linear Algebra</em> (5ª edição). Wellesley-Cambridge Press. (Autovalores, autovetores, matrizes simétricas e decomposição espectral).
+          </li>
+          <li>
+            <strong className="text-white">MIT OpenCourseWare (2010).</strong> <em>18.06SC Linear Algebra</em>. Material didático aberto sobre subespaços, autovalores e diagonalização.
+          </li>
         </ol>
       </div>
     </div>

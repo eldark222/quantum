@@ -43,7 +43,8 @@ src/
   espectral de matrizes reais 2×2.
 - **Features:** `features/simulators` adapta os modelos físicos para controles,
   gráficos e interpretação. `features/mathematics` apresenta conceitos
-  matemáticos aplicados. `features/education` mantém o conteúdo conceitual e as
+  matemáticos aplicados, incluindo o simulador visual de decomposição espectral.
+  `features/education` mantém o conteúdo conceitual, aplicações, glossário e as
   referências apresentadas ao usuário.
 - **Testes:** `tests` verifica propriedades matemáticas e físicas dos modelos.
 

@@ -4,7 +4,7 @@ import { MathView } from '../../components/common/MathView';
 
 interface GlossaryTerm {
   term: string;
-  category: 'Fundamentos' | 'Observáveis & Operadores' | 'Fenômenos Quânticos' | 'Informação Quântica';
+  category: 'Fundamentos' | 'Observáveis & Operadores' | 'Fenômenos Quânticos' | 'Informação Quântica' | 'Matemática Aplicada';
   symbol?: string;
   unit?: string;
   definition: string;
@@ -13,6 +13,30 @@ interface GlossaryTerm {
 }
 
 const GLOSSARY_TERMS: GlossaryTerm[] = [
+  {
+    term: 'Autovalor',
+    category: 'Matemática Aplicada',
+    symbol: '\\lambda',
+    definition: 'Escalar que mede o fator de escala de uma transformação linear em uma direção própria, sem alterar sua direção.',
+    equation: 'A\\vec{v}=\\lambda\\vec{v},\\quad \\vec{v}\\ne\\vec{0}',
+    details: 'Em matrizes simétricas reais, os autovalores são reais e os autovetores de autovalores distintos são ortogonais.',
+  },
+  {
+    term: 'Autovetor',
+    category: 'Matemática Aplicada',
+    symbol: '\\vec{v}',
+    definition: 'Vetor não nulo cuja direção permanece invariável quando uma matriz é aplicada, sofrendo apenas uma escala λ.',
+    equation: '(A-\\lambda I)\\vec{v}=\\vec{0}',
+    details: 'A normalização de um autovetor não muda a direção física ou geométrica que ele representa.',
+  },
+  {
+    term: 'Decomposição Espectral',
+    category: 'Matemática Aplicada',
+    symbol: 'A=Q\\Lambda Q^T',
+    definition: 'Representação de uma matriz simétrica real por uma base ortonormal de autovetores e uma matriz diagonal de autovalores.',
+    equation: 'Q^TQ=I',
+    details: 'O teorema espectral garante essa forma para matrizes reais simétricas; matrizes gerais exigem hipóteses e decomposições diferentes.',
+  },
   {
     term: 'Função de Onda',
     category: 'Fundamentos',
@@ -84,7 +108,7 @@ export const GlossarySection: React.FC = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const categories = ['all', 'Fundamentos', 'Observáveis & Operadores', 'Fenômenos Quânticos', 'Informação Quântica'];
+  const categories = ['all', 'Fundamentos', 'Observáveis & Operadores', 'Fenômenos Quânticos', 'Informação Quântica', 'Matemática Aplicada'];
 
   const filtered = useMemo(() => {
     return GLOSSARY_TERMS.filter((t) => {

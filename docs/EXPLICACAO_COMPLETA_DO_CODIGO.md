@@ -87,6 +87,12 @@ dimensão do autoespaço no caso de autovalor repetido. Autovalores complexos s�
 representados como pares conjugados, sem alegar a existência de autovetores
 reais.
 
+O módulo [spectral2x2.ts](../src/core/math/spectral2x2.ts) restringe a entrada a
+matrizes simétricas reais e calcula `A = QΛQᵀ`, com base ortonormal e resíduo de
+reconstrução. [SpectralSimulatorSection.tsx](../src/features/mathematics/SpectralSimulatorSection.tsx)
+apresenta esses eixos e a elipse transformada em uma visualização SVG escalada;
+essa escala é apenas gráfica e não altera os valores numéricos.
+
 ### Núcleo científico
 
 Os arquivos em [src/core/physics](../src/core/physics) não importam React,
