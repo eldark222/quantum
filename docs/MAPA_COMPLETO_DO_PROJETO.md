@@ -54,6 +54,7 @@
 | Arquivo | Símbolos principais | Consumidores |
 | --- | --- | --- |
 | `src/core/math/linearSystem.ts` | `solveLinearSystem2x2`, classificação e resíduos | `LinearSystemSection` e testes |
+| `src/core/math/matrix2x2.ts` | determinante, traço, inversa e transformação de vetores | `MatrixSection` e testes |
 
 | Arquivo | Símbolos principais | Consumidores |
 | --- | --- | --- |

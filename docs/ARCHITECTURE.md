@@ -38,8 +38,8 @@ src/
 - **Física:** `core/physics` não depende de React. Cada arquivo concentra um
   modelo ou grupo de conversões relacionado: poço infinito, dupla fenda,
   incerteza, tunelamento, superposição, emaranhamento, constantes e unidades.
-- **Matemática:** `core/math` contém algoritmos puros reutilizáveis. O primeiro
-  módulo é `linearSystem.ts`, que resolve e classifica sistemas lineares 2×2.
+- **Matemática:** `core/math` contém algoritmos puros reutilizáveis. Os módulos
+  atuais resolvem sistemas lineares 2×2 e operações de matrizes 2×2.
 - **Features:** `features/simulators` adapta os modelos físicos para controles,
   gráficos e interpretação. `features/mathematics` apresenta conceitos
   matemáticos aplicados. `features/education` mantém o conteúdo conceitual e as
@@ -69,7 +69,7 @@ features   -> core/math | core/physics
 tests      -> core/math | core/physics
 ```
 
-Os modelos em `core/physics` não devem importar componentes ou APIs do navegador.
+Os modelos em `core/physics` e `core/math` não devem importar componentes ou APIs do navegador.
 Componentes genéricos não devem conter cálculos científicos específicos. Quando
 um cálculo for usado por mais de uma feature, ele deve ser extraído para
 `core/physics` em vez de duplicado na interface.

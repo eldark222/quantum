@@ -11,6 +11,7 @@ import {
   BookMarked,
   Info,
   Sigma,
+  Grid2X2,
   Menu,
   X,
 } from 'lucide-react';
@@ -25,7 +26,8 @@ export type TabId =
   | 'applications'
   | 'glossary'
   | 'about'
-  | 'linear-system';
+  | 'linear-system'
+  | 'matrix';
 
 interface HeaderProps {
   activeTab: TabId;
@@ -50,6 +52,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'glossary', label: 'Glossário', icon: <BookMarked className="w-4 h-4" />, category: 'knowledge' },
   { id: 'about', label: 'Sobre & Fontes', icon: <Info className="w-4 h-4" />, category: 'knowledge' },
   { id: 'linear-system', label: 'Álgebra Linear', icon: <Sigma className="w-4 h-4" />, category: 'knowledge' },
+  { id: 'matrix', label: 'Matrizes', icon: <Grid2X2 className="w-4 h-4" />, category: 'knowledge' },
 ];
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {

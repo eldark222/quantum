@@ -14,6 +14,31 @@ import { applyHadamardGate, calculateQubitState } from '../core/physics/superpos
 import { calculateQuantumCorrelation, evaluateChshInequality } from '../core/physics/entanglement';
 import { calculateDoubleSlitIntensity, calculateDeBroglieWavelengthNm } from '../core/physics/doubleSlit';
 import { solveLinearSystem2x2 } from '../core/math/linearSystem';
+import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../core/math/matrix2x2';
+
+describe('Álgebra linear: matrizes 2×2', () => {
+  it('calcula determinante e traço', () => {
+    const matrix = { a: 2, b: 1, c: 1, d: 3 };
+    expect(determinant2x2(matrix)).toBe(5);
+    expect(trace2x2(matrix)).toBe(5);
+  });
+
+  it('transforma vetor e recupera o vetor pela inversa', () => {
+    const matrix = { a: 2, b: 1, c: 1, d: 3 };
+    const vector = { x: 1, y: 2 };
+    const transformed = multiplyMatrixVector(matrix, vector);
+    const inverse = inverse2x2(matrix);
+    expect(transformed).toEqual({ x: 4, y: 7 });
+    expect(inverse).not.toBeNull();
+    expect(multiplyMatrixVector(inverse!.matrix, transformed).x).toBeCloseTo(vector.x, 12);
+    expect(multiplyMatrixVector(inverse!.matrix, transformed).y).toBeCloseTo(vector.y, 12);
+  });
+
+  it('não fornece inversa para matriz singular e rejeita entradas inválidas', () => {
+    expect(inverse2x2({ a: 1, b: 2, c: 2, d: 4 })).toBeNull();
+    expect(() => determinant2x2({ a: Number.NaN, b: 0, c: 0, d: 1 })).toThrow();
+  });
+});
 
 describe('Conversões de Unidades Físicas', () => {
   it('converte corretamente entre Joules e eV', () => {

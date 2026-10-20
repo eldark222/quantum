@@ -77,6 +77,10 @@ interface. Modelos físicos podem depender dessas funções, mas não o contrár
 O primeiro módulo segue essa regra em `src/core/math/linearSystem.ts`, com a
 feature correspondente em `src/features/mathematics/LinearSystemSection.tsx`.
 
+O módulo de matrizes 2×2 segue o mesmo padrão e deve ser reutilizado por futuras
+experiências de autovalores, transformações geométricas e estados quânticos,
+sem duplicar determinantes ou inversões na interface.
+
 ## 5. Conteúdo educacional
 
 Conteúdo novo deve informar:

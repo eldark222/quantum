@@ -13,6 +13,7 @@ const ApplicationsSection = lazy(() => import('./features/education/Applications
 const GlossarySection = lazy(() => import('./features/education/GlossarySection').then((module) => ({ default: module.GlossarySection })));
 const AboutSection = lazy(() => import('./features/education/AboutSection').then((module) => ({ default: module.AboutSection })));
 const LinearSystemSection = lazy(() => import('./features/mathematics/LinearSystemSection').then((module) => ({ default: module.LinearSystemSection })));
+const MatrixSection = lazy(() => import('./features/mathematics/MatrixSection').then((module) => ({ default: module.MatrixSection })));
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('infinite-well');
@@ -39,6 +40,8 @@ export const App: React.FC = () => {
         return <AboutSection />;
       case 'linear-system':
         return <LinearSystemSection />;
+      case 'matrix':
+        return <MatrixSection />;
       default:
         return <InfiniteWellSimulator />;
     }

@@ -75,6 +75,11 @@ A feature
 fornece entradas, interpretação, equações e um exemplo resolvido sem duplicar
 o cálculo no componente.
 
+O módulo [matrix2x2.ts](../src/core/math/matrix2x2.ts) mantém a mesma separação:
+calcula determinante e traço, aplica uma matriz a um vetor e constrói a inversa
+apenas quando o determinante está fora da tolerância numérica. A interface mostra
+explicitamente o caso singular, em vez de produzir divisões indefinidas.
+
 ### Núcleo científico
 
 Os arquivos em [src/core/physics](../src/core/physics) não importam React,
