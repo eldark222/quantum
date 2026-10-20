@@ -12,14 +12,16 @@ export interface PhysicalConstant {
 }
 
 /**
- * Constante de Planck reduzida: \hbar = h / (2\pi) em J.s
- */
-export const H_BAR = 1.054571817e-34; // J s
-
-/**
  * Constante de Planck: h em J.s
  */
 export const H_PLANCK = 6.62607015e-34; // J s (valor exato SI)
+
+/**
+ * Constante de Planck reduzida: hbar = h / (2 pi) em J.s.
+ * O valor numérico é derivado da definição exata de h e do valor
+ * matemático de pi, não uma constante SI independente.
+ */
+export const H_BAR = H_PLANCK / (2 * Math.PI);
 
 /**
  * Velocidade da luz no vácuo: c em m/s

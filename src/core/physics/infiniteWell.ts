@@ -22,6 +22,15 @@ export interface InfiniteWellResult {
   uncertaintyProductHbar: number; // produto Delta x * Delta p em unidades de \hbar
 }
 
+function validateWellParameters(n: number, widthNm: number): void {
+  if (!Number.isInteger(n) || n < 1) {
+    throw new Error('O número quântico n deve ser um inteiro maior ou igual a 1.');
+  }
+  if (!Number.isFinite(widthNm) || widthNm <= 0) {
+    throw new Error('A largura do poço L deve ser um número finito positivo.');
+  }
+}
+
 /**
  * Calcula a energia quantizada E_n do poço infinito
  * E_n = (n^2 * \pi^2 * \hbar^2) / (2 * m * L^2)
@@ -31,14 +40,9 @@ export interface InfiniteWellResult {
  * @param massKg Massa da partícula em kg (padrão: massa do elétron)
  */
 export function calculateEnergy(n: number, widthNm: number, massKg: number = ELECTRON_MASS): number {
-  if (n < 1 || !Number.isInteger(n)) {
-    throw new Error('O número quântico n deve ser um inteiro maior ou igual a 1.');
-  }
-  if (widthNm <= 0) {
-    throw new Error('A largura do poço L deve ser estritamente positiva.');
-  }
-  if (massKg <= 0) {
-    throw new Error('A massa da partícula deve ser estritamente positiva.');
+  validateWellParameters(n, widthNm);
+  if (!Number.isFinite(massKg) || massKg <= 0) {
+    throw new Error('A massa da partícula deve ser um número finito positivo.');
   }
 
   const widthMeters = nmToMeters(widthNm);
@@ -52,6 +56,10 @@ export function calculateEnergy(n: number, widthNm: number, massKg: number = ELE
  * \psi_n(x) = \sqrt{2 / L} * \sin(n * \pi * x / L) para 0 <= x <= L
  */
 export function calculateWaveFunction(x: number, n: number, widthNm: number): number {
+  validateWellParameters(n, widthNm);
+  if (!Number.isFinite(x)) {
+    throw new Error('A posição x deve ser um número finito.');
+  }
   if (x < 0 || x > widthNm) return 0;
   return Math.sqrt(2 / widthNm) * Math.sin((n * Math.PI * x) / widthNm);
 }
@@ -69,6 +77,7 @@ export function calculateProbabilityDensity(x: number, n: number, widthNm: numbe
  * x_k = k * L / n, para k = 1, ..., n - 1
  */
 export function calculateNodes(n: number, widthNm: number): number[] {
+  validateWellParameters(n, widthNm);
   const nodes: number[] = [];
   for (let k = 1; k < n; k++) {
     nodes.push((k * widthNm) / n);
@@ -86,6 +95,10 @@ export function calculateIntervalProbability(
   n: number,
   widthNm: number,
 ): number {
+  validateWellParameters(n, widthNm);
+  if (![x1, x2].every(Number.isFinite)) {
+    throw new Error('Os limites do intervalo devem ser números finitos.');
+  }
   const a = Math.max(0, Math.min(x1, x2));
   const b = Math.min(widthNm, Math.max(x1, x2));
   if (a >= b) return 0;
@@ -107,6 +120,13 @@ export function simulateInfiniteWell(
   massKg: number = ELECTRON_MASS,
   numPoints: number = 200,
 ): InfiniteWellResult {
+  validateWellParameters(n, widthNm);
+  if (!Number.isFinite(massKg) || massKg <= 0) {
+    throw new Error('A massa da partícula deve ser um número finito positivo.');
+  }
+  if (!Number.isInteger(numPoints) || numPoints < 1) {
+    throw new Error('O número de pontos deve ser um inteiro positivo.');
+  }
   const energyJoules = calculateEnergy(n, widthNm, massKg);
   const energyEv = joulesToEv(energyJoules);
   const nodes = calculateNodes(n, widthNm);

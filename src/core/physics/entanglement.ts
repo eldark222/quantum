@@ -26,6 +26,9 @@ export interface ChshResult {
  * E(a, b) = -\cos(\theta_A - \theta_B)
  */
 export function calculateQuantumCorrelation(thetaADeg: number, thetaBDeg: number): number {
+  if (![thetaADeg, thetaBDeg].every(Number.isFinite)) {
+    throw new Error('Os ângulos de medição devem ser números finitos.');
+  }
   const deltaRad = ((thetaADeg - thetaBDeg) * Math.PI) / 180;
   return -Math.cos(deltaRad);
 }
@@ -41,6 +44,9 @@ export function evaluateChshInequality(
   bDeg: number = 45,
   bPrimeDeg: number = 135,
 ): ChshResult {
+  if (![aDeg, aPrimeDeg, bDeg, bPrimeDeg].every(Number.isFinite)) {
+    throw new Error('Os quatro ângulos CHSH devem ser números finitos.');
+  }
   const e_ab = calculateQuantumCorrelation(aDeg, bDeg);
   const e_abPrime = calculateQuantumCorrelation(aDeg, bPrimeDeg);
   const e_aPrimeB = calculateQuantumCorrelation(aPrimeDeg, bDeg);

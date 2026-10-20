@@ -4,6 +4,9 @@ import { ELEMENTARY_CHARGE } from './constants';
  * Converte valor de Joules (J) para elétron-volts (eV)
  */
 export function joulesToEv(joules: number): number {
+  if (!Number.isFinite(joules)) {
+    throw new Error('A energia em joules deve ser um número finito.');
+  }
   return joules / ELEMENTARY_CHARGE;
 }
 
@@ -11,6 +14,9 @@ export function joulesToEv(joules: number): number {
  * Converte valor de elétron-volts (eV) para Joules (J)
  */
 export function evToJoules(ev: number): number {
+  if (!Number.isFinite(ev)) {
+    throw new Error('A energia em elétron-volts deve ser um número finito.');
+  }
   return ev * ELEMENTARY_CHARGE;
 }
 
@@ -18,6 +24,9 @@ export function evToJoules(ev: number): number {
  * Converte nanômetros (nm) para metros (m)
  */
 export function nmToMeters(nm: number): number {
+  if (!Number.isFinite(nm)) {
+    throw new Error('O comprimento em nanômetros deve ser um número finito.');
+  }
   return nm * 1e-9;
 }
 
@@ -25,6 +34,9 @@ export function nmToMeters(nm: number): number {
  * Converte metros (m) para nanômetros (nm)
  */
 export function metersToNm(meters: number): number {
+  if (!Number.isFinite(meters)) {
+    throw new Error('O comprimento em metros deve ser um número finito.');
+  }
   return meters * 1e9;
 }
 

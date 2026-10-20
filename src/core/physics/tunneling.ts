@@ -2,144 +2,226 @@ import { H_BAR } from './constants';
 import { nmToMeters, evToJoules } from './units';
 
 export interface TunnelingParams {
-  particleEnergyEv: number; // energia da partícula E em eV
-  barrierHeightEv: number; // altura da barreira V_0 em eV
-  barrierWidthNm: number; // espessura da barreira a em nm
-  massKg: number; // massa da partícula em kg
+  particleEnergyEv: number;
+  barrierHeightEv: number;
+  barrierWidthNm: number;
+  massKg: number;
 }
 
 export interface TunnelingResult {
-  transmissionCoefficient: number; // T in [0, 1]
-  reflectionCoefficient: number; // R in [0, 1], T + R = 1
-  wavenumberK: number; // k em m^(-1) na região livre
-  barrierKappa: number; // kappa em m^(-1) para E < V_0 ou k' para E > V_0
+  transmissionCoefficient: number;
+  reflectionCoefficient: number;
+  wavenumberK: number;
+  barrierKappa: number;
   regime: 'tunneling' | 'over_barrier' | 'threshold';
   waveProfile: { xNm: number; realPsi: number; density: number; potentialEv: number }[];
 }
 
-/**
- * Calcula os coeficientes analíticos de transmissão T e reflexão R
- */
-export function calculateTunnelingCoefficients(params: TunnelingParams): {
+type Regime = TunnelingResult['regime'];
+interface Coefficients {
   T: number;
   R: number;
-  regime: 'tunneling' | 'over_barrier' | 'threshold';
+  regime: Regime;
   kappa: number;
   k: number;
-} {
+}
+
+interface Complex {
+  re: number;
+  im: number;
+}
+
+const complex = (re: number, im = 0): Complex => ({ re, im });
+const add = (a: Complex, b: Complex): Complex => complex(a.re + b.re, a.im + b.im);
+const subtract = (a: Complex, b: Complex): Complex => complex(a.re - b.re, a.im - b.im);
+const multiply = (a: Complex, b: Complex): Complex =>
+  complex(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re);
+const divide = (a: Complex, b: Complex): Complex => {
+  const denominator = b.re * b.re + b.im * b.im;
+  return complex((a.re * b.re + a.im * b.im) / denominator, (a.im * b.re - a.re * b.im) / denominator);
+};
+const scale = (a: Complex, factor: number): Complex => complex(a.re * factor, a.im * factor);
+const magnitudeSquared = (a: Complex): number => a.re * a.re + a.im * a.im;
+const expComplex = (real: number, imaginary = 0): Complex => {
+  const amplitude = Math.exp(real);
+  return complex(amplitude * Math.cos(imaginary), amplitude * Math.sin(imaginary));
+};
+
+function validateParameters(params: TunnelingParams): void {
   const { particleEnergyEv, barrierHeightEv, barrierWidthNm, massKg } = params;
-  const E = evToJoules(particleEnergyEv);
-  const V0 = evToJoules(barrierHeightEv);
-  const a = nmToMeters(barrierWidthNm);
-
-  if (E <= 0 || V0 <= 0 || a <= 0 || massKg <= 0) {
-    return { T: 0, R: 1, regime: 'tunneling', kappa: 0, k: 0 };
+  if (![particleEnergyEv, barrierHeightEv, barrierWidthNm, massKg].every(Number.isFinite)) {
+    throw new Error('Os parâmetros de tunelamento devem ser números finitos.');
   }
+  if (particleEnergyEv <= 0 || barrierHeightEv <= 0 || barrierWidthNm <= 0 || massKg <= 0) {
+    throw new Error('Energia, barreira, largura e massa devem ser estritamente positivas.');
+  }
+}
 
-  const k = Math.sqrt(2 * massKg * E) / H_BAR;
+function logSinhSquared(value: number): number {
+  if (value < 20) return 2 * Math.log(Math.sinh(value));
+  return 2 * (value - Math.log(2) + Math.log1p(-Math.exp(-2 * value)));
+}
 
-  // Limite E ≈ V0
-  if (Math.abs(E - V0) < 1e-22) {
-    const denominator = 1 + (massKg * V0 * a * a) / (2 * Math.pow(H_BAR, 2));
+function boundedTransmission(logFactor: number, argument: number): number {
+  if (argument === 0) return 1;
+  const logTerm = logFactor + logSinhSquared(argument);
+  if (logTerm > 745) return 0;
+  return 1 / (1 + Math.exp(logTerm));
+}
+
+/**
+ * Coeficientes exatos de espalhamento para uma barreira retangular 1D.
+ * A incidência tem amplitude 1 e, como os números de onda externos são iguais,
+ * o fluxo implica R = 1 - T.
+ */
+export function calculateTunnelingCoefficients(params: TunnelingParams): Coefficients {
+  validateParameters(params);
+  const E = evToJoules(params.particleEnergyEv);
+  const V0 = evToJoules(params.barrierHeightEv);
+  const a = nmToMeters(params.barrierWidthNm);
+  const k = Math.sqrt(2 * params.massKg * E) / H_BAR;
+  const relativeThreshold = 1e-12 * Math.max(E, V0);
+
+  if (Math.abs(E - V0) <= relativeThreshold) {
+    const denominator = 1 + (params.massKg * V0 * a * a) / (2 * H_BAR * H_BAR);
     const T = 1 / denominator;
     return { T, R: 1 - T, regime: 'threshold', kappa: 0, k };
   }
 
-  // Regime de tunelamento: E < V0
   if (E < V0) {
-    const kappa = Math.sqrt(2 * massKg * (V0 - E)) / H_BAR;
-    const sinhVal = Math.sinh(kappa * a);
-    const factor = Math.pow(V0, 2) / (4 * E * (V0 - E));
-    const denominator = 1 + factor * Math.pow(sinhVal, 2);
-    const T = 1 / denominator;
-    return {
-      T: Math.max(0, Math.min(1, T)),
-      R: Math.max(0, Math.min(1, 1 - T)),
-      regime: 'tunneling',
-      kappa,
-      k,
-    };
+    const kappa = Math.sqrt(2 * params.massKg * (V0 - E)) / H_BAR;
+    const logFactor = Math.log(V0 * V0) - Math.log(4 * E * (V0 - E));
+    const T = boundedTransmission(logFactor, kappa * a);
+    return { T, R: 1 - T, regime: 'tunneling', kappa, k };
   }
 
-  // Regime acima da barreira: E > V0
-  const kPrime = Math.sqrt(2 * massKg * (E - V0)) / H_BAR;
-  const sinVal = Math.sin(kPrime * a);
-  const factor = Math.pow(V0, 2) / (4 * E * (E - V0));
-  const denominator = 1 + factor * Math.pow(sinVal, 2);
+  const waveNumber = Math.sqrt(2 * params.massKg * (E - V0)) / H_BAR;
+  const factor = (V0 * V0) / (4 * E * (E - V0));
+  const denominator = 1 + factor * Math.sin(waveNumber * a) ** 2;
   const T = 1 / denominator;
-  return {
-    T: Math.max(0, Math.min(1, T)),
-    R: Math.max(0, Math.min(1, 1 - T)),
-    regime: 'over_barrier',
-    kappa: kPrime,
-    k,
-  };
+  return { T, R: 1 - T, regime: 'over_barrier', kappa: waveNumber, k };
+}
+
+function solveLinearSystem(matrix: Complex[][], rhs: Complex[]): Complex[] {
+  const augmented = matrix.map((row, index) => [...row, rhs[index]]);
+  for (let column = 0; column < 4; column++) {
+    let pivot = column;
+    for (let row = column + 1; row < 4; row++) {
+      if (magnitudeSquared(augmented[row][column]) > magnitudeSquared(augmented[pivot][column])) {
+        pivot = row;
+      }
+    }
+    [augmented[column], augmented[pivot]] = [augmented[pivot], augmented[column]];
+    const pivotValue = augmented[column][column];
+    for (let item = column; item <= 4; item++) {
+      augmented[column][item] = divide(augmented[column][item], pivotValue);
+    }
+    for (let row = 0; row < 4; row++) {
+      if (row === column) continue;
+      const factor = augmented[row][column];
+      for (let item = column; item <= 4; item++) {
+        augmented[row][item] = subtract(augmented[row][item], multiply(factor, augmented[column][item]));
+      }
+    }
+  }
+  return augmented.map((row) => row[4]);
+}
+
+function calculateScatteringAmplitudes(params: TunnelingParams, coefficients: Coefficients): Complex[] {
+  const a = nmToMeters(params.barrierWidthNm);
+  const k = coefficients.k;
+  const phase = expComplex(0, k * a);
+  const ik = complex(0, k);
+  if (coefficients.regime === 'threshold') {
+    const matrix = [
+      [complex(1), complex(-1), complex(-1), complex(0)],
+      [scale(ik, -1), complex(0), complex(-1), complex(0)],
+      [complex(0), complex(1), complex(a), scale(phase, -1)],
+      [complex(0), complex(0), complex(1), multiply(scale(phase, -1), ik)],
+    ];
+    return solveLinearSystem(matrix, [complex(-1), scale(ik, -1), complex(0), complex(0)]);
+  }
+
+  const q = coefficients.kappa;
+  const left = coefficients.regime === 'tunneling' ? complex(q) : complex(0, q);
+  const right = coefficients.regime === 'tunneling' ? complex(-q) : complex(0, -q);
+  const leftAtA = expComplex(left.re * a, left.im * a);
+  const rightAtA = expComplex(right.re * a, right.im * a);
+  const matrix = [
+    [complex(1), scale(left, -1), scale(right, -1), complex(0)],
+    [scale(ik, -1), scale(left, -1), scale(right, -1), complex(0)],
+    [complex(0), leftAtA, rightAtA, scale(phase, -1)],
+    [complex(0), multiply(left, leftAtA), multiply(right, rightAtA), scale(multiply(ik, phase), -1)],
+  ];
+  return solveLinearSystem(matrix, [complex(-1), scale(ik, -1), complex(0), complex(0)]);
 }
 
 /**
- * Simula o perfil da função de onda e potencial através das 3 regiões
+ * Gera o perfil estacionário exato (parte real e densidade |psi|^2) nas três
+ * regiões da barreira. A amplitude incidente é 1; o perfil não é uma
+ * distribuição temporal de pacotes de onda.
  */
-export function simulateTunneling(
-  params: TunnelingParams,
-  numPoints: number = 300,
-): TunnelingResult {
-  const { T, R, regime, kappa, k } = calculateTunnelingCoefficients(params);
-  const a = params.barrierWidthNm;
-  const windowNm = Math.max(3 * a, 2.0); // janela total de visualização
-
+export function simulateTunneling(params: TunnelingParams, numPoints: number = 300): TunnelingResult {
+  validateParameters(params);
+  if (!Number.isInteger(numPoints) || numPoints < 1) {
+    throw new Error('O número de pontos deve ser um inteiro positivo.');
+  }
+  const coefficients = calculateTunnelingCoefficients(params);
+  const amplitudes = calculateScatteringAmplitudes(params, coefficients);
+  const aNm = params.barrierWidthNm;
+  const a = nmToMeters(aNm);
+  const windowNm = Math.max(3 * aNm, 2);
   const xMin = -windowNm * 0.5;
-  const xMax = a + windowNm * 0.5;
+  const xMax = aNm + windowNm * 0.5;
   const step = (xMax - xMin) / numPoints;
-
-  const waveProfile: { xNm: number; realPsi: number; density: number; potentialEv: number }[] = [];
-
-  const tAmp = Math.sqrt(T);
-  const rAmp = Math.sqrt(R);
+  const waveProfile = [];
 
   for (let i = 0; i <= numPoints; i++) {
-    const x = xMin + i * step;
-    let potential = 0;
-    let psiVal = 0;
-
+    const xNm = xMin + i * step;
+    const x = nmToMeters(xNm);
+    let psi: Complex;
+    let potentialEv: number;
     if (x < 0) {
-      // Região I: incidente + refletida
-      potential = 0;
-      const kScaled = (k * 1e-9) % (2 * Math.PI);
-      psiVal = Math.cos(kScaled * x) + rAmp * Math.cos(-kScaled * x + Math.PI / 2);
+      psi = add(expComplex(0, coefficients.k * x), multiply(amplitudes[0], expComplex(0, -coefficients.k * x)));
+      potentialEv = 0;
     } else if (x <= a) {
-      // Região II: barreira
-      potential = params.barrierHeightEv;
-      if (regime === 'tunneling') {
-        const kappaScaled = kappa * 1e-9;
-        const decay = Math.exp(-kappaScaled * x);
-        psiVal = (1 - rAmp * 0.5) * decay;
+      const coordinate = x;
+      if (coefficients.regime === 'threshold') {
+        psi = add(amplitudes[1], scale(amplitudes[2], coordinate));
       } else {
-        const kpScaled = (kappa * 1e-9) % (2 * Math.PI);
-        psiVal = (1 - rAmp * 0.3) * Math.cos(kpScaled * x);
+        const left = coefficients.regime === 'tunneling' ? coefficients.kappa : 0;
+        const right = coefficients.regime === 'tunneling' ? -coefficients.kappa : 0;
+        const internalQ = coefficients.regime === 'over_barrier' ? coefficients.kappa : 0;
+        psi =
+          coefficients.regime === 'tunneling'
+            ? add(
+                multiply(amplitudes[1], expComplex(left * coordinate)),
+                multiply(amplitudes[2], expComplex(right * coordinate)),
+              )
+            : add(
+                multiply(amplitudes[1], expComplex(0, internalQ * coordinate)),
+                multiply(amplitudes[2], expComplex(0, -internalQ * coordinate)),
+              );
       }
+      potentialEv = params.barrierHeightEv;
     } else {
-      // Região III: transmitida
-      potential = 0;
-      const kScaled = (k * 1e-9) % (2 * Math.PI);
-      psiVal = tAmp * Math.cos(kScaled * (x - a));
+      psi = multiply(amplitudes[3], expComplex(0, coefficients.k * x));
+      potentialEv = 0;
     }
-
-    const density = Math.min(2.5, Math.pow(psiVal, 2));
-
     waveProfile.push({
-      xNm: Number(x.toFixed(4)),
-      realPsi: Number(psiVal.toFixed(4)),
-      density: Number(density.toFixed(4)),
-      potentialEv: potential,
+      xNm: Number(xNm.toFixed(4)),
+      realPsi: Number(psi.re.toFixed(4)),
+      density: Number(magnitudeSquared(psi).toFixed(4)),
+      potentialEv,
     });
   }
 
   return {
-    transmissionCoefficient: T,
-    reflectionCoefficient: R,
-    wavenumberK: k,
-    barrierKappa: kappa,
-    regime,
+    transmissionCoefficient: coefficients.T,
+    reflectionCoefficient: coefficients.R,
+    wavenumberK: coefficients.k,
+    barrierKappa: coefficients.kappa,
+    regime: coefficients.regime,
     waveProfile,
   };
 }

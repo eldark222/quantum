@@ -20,7 +20,12 @@ export interface DoubleSlitParams {
  * \lambda = h / p = h / \sqrt{2 * m * E}
  */
 export function calculateDeBroglieWavelengthNm(energyJoules: number, massKg: number): number {
-  if (energyJoules <= 0 || massKg <= 0) return 0;
+  if (!Number.isFinite(energyJoules) || energyJoules <= 0) {
+    throw new Error('A energia deve ser um número finito positivo.');
+  }
+  if (!Number.isFinite(massKg) || massKg <= 0) {
+    throw new Error('A massa deve ser um número finito positiva.');
+  }
   const p = Math.sqrt(2 * massKg * energyJoules);
   const lambdaMeters = H_PLANCK / p;
   return lambdaMeters * 1e9;
@@ -34,6 +39,13 @@ export function calculateDoubleSlitIntensity(
   params: DoubleSlitParams,
 ): { intensity: number; envelope: number; classical: number } {
   const { wavelengthNm, slitSeparationUm, slitWidthUm, screenDistanceM, hasWhichWayDetector } = params;
+  if (
+    ![wavelengthNm, slitSeparationUm, slitWidthUm, screenDistanceM].every(
+      (value) => Number.isFinite(value) && value > 0,
+    )
+  ) {
+    throw new Error('Os parâmetros da dupla fenda devem ser finitos e positivos.');
+  }
   
   const lambda = wavelengthNm * 1e-9;
   const d = slitSeparationUm * 1e-6;
@@ -73,6 +85,12 @@ export function simulateDoubleSlit(
   screenRangeMm: number = 30,
   numPoints: number = 300,
 ): DoubleSlitPoint[] {
+  if (!Number.isFinite(screenRangeMm) || screenRangeMm <= 0) {
+    throw new Error('O alcance da tela deve ser um número finito positivo.');
+  }
+  if (!Number.isInteger(numPoints) || numPoints < 1) {
+    throw new Error('O número de pontos deve ser um inteiro positivo.');
+  }
   const points: DoubleSlitPoint[] = [];
   const step = (2 * screenRangeMm) / numPoints;
 

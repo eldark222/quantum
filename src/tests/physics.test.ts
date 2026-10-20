@@ -8,10 +8,11 @@ import {
 } from '../core/physics/infiniteWell';
 import { joulesToEv, evToJoules, nmToMeters, metersToNm } from '../core/physics/units';
 import { ELECTRON_MASS, H_BAR, PROTON_MASS } from '../core/physics/constants';
-import { calculateTunnelingCoefficients } from '../core/physics/tunneling';
+import { calculateTunnelingCoefficients, simulateTunneling } from '../core/physics/tunneling';
 import { simulateUncertainty } from '../core/physics/uncertainty';
-import { calculateQubitState } from '../core/physics/superposition';
-import { evaluateChshInequality } from '../core/physics/entanglement';
+import { applyHadamardGate, calculateQubitState } from '../core/physics/superposition';
+import { calculateQuantumCorrelation, evaluateChshInequality } from '../core/physics/entanglement';
+import { calculateDoubleSlitIntensity, calculateDeBroglieWavelengthNm } from '../core/physics/doubleSlit';
 
 describe('Conversões de Unidades Físicas', () => {
   it('converte corretamente entre Joules e eV', () => {
@@ -26,6 +27,11 @@ describe('Conversões de Unidades Físicas', () => {
     expect(metersToNm(1e-9)).toBe(1);
     expect(metersToNm(nmToMeters(500))).toBeCloseTo(500, 10);
   });
+
+  it('rejeita valores não finitos', () => {
+    expect(() => evToJoules(Number.NaN)).toThrow();
+    expect(() => nmToMeters(Number.POSITIVE_INFINITY)).toThrow();
+  });
 });
 
 describe('Poço de Potencial Infinito 1D', () => {
@@ -37,6 +43,10 @@ describe('Poço de Potencial Infinito 1D', () => {
 
     expect(e2 / e1).toBeCloseTo(4, 5); // 2^2 = 4
     expect(e3 / e1).toBeCloseTo(9, 5); // 3^2 = 9
+  });
+
+  it('reproduz a energia fundamental analítica do elétron em 1 nm', () => {
+    expect(joulesToEv(calculateEnergy(1, 1, ELECTRON_MASS))).toBeCloseTo(0.376030, 5);
   });
 
   it('respeita a dependência inversa do quadrado da largura L', () => {
@@ -95,6 +105,12 @@ describe('Poço de Potencial Infinito 1D', () => {
     expect(calculateIntervalProbability(0, L / 2, 1, L)).toBeCloseTo(0.5, 5);
     expect(calculateIntervalProbability(0, L / 2, 2, L)).toBeCloseTo(0.5, 5);
   });
+
+  it('rejeita parâmetros inválidos em vez de gerar valores silenciosamente', () => {
+    expect(() => calculateEnergy(0, 1, ELECTRON_MASS)).toThrow();
+    expect(() => calculateWaveFunction(0, 1, Number.NaN)).toThrow();
+    expect(() => simulateInfiniteWell(1, 1, ELECTRON_MASS, 0)).toThrow();
+  });
 });
 
 describe('Princípio da Incerteza de Heisenberg', () => {
@@ -102,6 +118,39 @@ describe('Princípio da Incerteza de Heisenberg', () => {
     const result = simulateUncertainty(0.5);
     expect(result.productJoulesSec).toBeGreaterThanOrEqual(H_BAR / 2 - 1e-38);
     expect(result.productRatioToHbarHalf).toBeCloseTo(1.0, 4);
+    expect(result.sigmaPEvSecPerNm).toBeCloseTo(
+      result.sigmaPJoulesSecPerM / 1.602176634e-19 * 1e-9,
+      12,
+    );
+    expect(() => simulateUncertainty(0)).toThrow();
+  });
+
+  describe('Dupla fenda', () => {
+    const params = {
+      wavelengthNm: 500,
+      slitSeparationUm: 20,
+      slitWidthUm: 4,
+      screenDistanceM: 1,
+      hasWhichWayDetector: false,
+    };
+
+    it('tem máximo central normalizado sem detector de caminho', () => {
+      const result = calculateDoubleSlitIntensity(0, params);
+      expect(result.intensity).toBeCloseTo(1, 12);
+      expect(result.envelope).toBeCloseTo(1, 12);
+    });
+
+    it('remove o termo de interferência quando o detector de caminho está ativo', () => {
+      const coherent = calculateDoubleSlitIntensity(0.5, params);
+      const incoherent = calculateDoubleSlitIntensity(0.5, { ...params, hasWhichWayDetector: true });
+      expect(incoherent.intensity).toBeCloseTo(incoherent.classical, 12);
+      expect(coherent.intensity).toBeLessThanOrEqual(coherent.envelope + 1e-12);
+    });
+
+    it('usa de Broglie com unidades SI consistentes', () => {
+      const wavelength = calculateDeBroglieWavelengthNm(1.602176634e-19, ELECTRON_MASS);
+      expect(wavelength).toBeCloseTo(1.226, 3);
+    });
   });
 });
 
@@ -126,6 +175,42 @@ describe('Tunelamento Quântico', () => {
     expect(resOverBarrier.T + resOverBarrier.R).toBeCloseTo(1.0, 6);
     expect(resOverBarrier.T).toBeGreaterThan(0.5);
   });
+
+  it('trata o limiar somente quando E/V0 é numericamente próximo de 1', () => {
+    const nearThreshold = calculateTunnelingCoefficients({
+      particleEnergyEv: 8 * (1 + 1e-13),
+      barrierHeightEv: 8,
+      barrierWidthNm: 0.2,
+      massKg: ELECTRON_MASS,
+    });
+    expect(nearThreshold.regime).toBe('threshold');
+
+    const distinctEnergy = calculateTunnelingCoefficients({
+      particleEnergyEv: 7.999,
+      barrierHeightEv: 8,
+      barrierWidthNm: 0.2,
+      massKg: ELECTRON_MASS,
+    });
+    expect(distinctEnergy.regime).toBe('tunneling');
+  });
+
+  it('permanece finito para uma barreira espessa e gera um perfil contínuo', () => {
+    const result = simulateTunneling({
+      particleEnergyEv: 1,
+      barrierHeightEv: 20,
+      barrierWidthNm: 1,
+      massKg: ELECTRON_MASS,
+    }, 200);
+    expect(Number.isFinite(result.transmissionCoefficient)).toBe(true);
+    expect(result.waveProfile.every((point) => Number.isFinite(point.density))).toBe(true);
+    expect(result.waveProfile[0].density).toBeGreaterThan(0);
+    expect(() => calculateTunnelingCoefficients({
+      particleEnergyEv: 0,
+      barrierHeightEv: 8,
+      barrierWidthNm: 0.2,
+      massKg: ELECTRON_MASS,
+    })).toThrow();
+  });
 });
 
 describe('Superposição e Qubit', () => {
@@ -136,6 +221,17 @@ describe('Superposição e Qubit', () => {
     const radiusSq = Math.pow(state.bloch.x, 2) + Math.pow(state.bloch.y, 2) + Math.pow(state.bloch.z, 2);
     expect(radiusSq).toBeCloseTo(1.0, 3);
   });
+
+  it('preserva a norma ao aplicar Hadamard', () => {
+    const state = applyHadamardGate(calculateQubitState(Math.PI / 3, Math.PI / 4));
+    expect(state.prob0 + state.prob1).toBeCloseTo(1, 12);
+    expect(state.bloch.x ** 2 + state.bloch.y ** 2 + state.bloch.z ** 2).toBeCloseTo(1, 12);
+  });
+
+  it('rejeita um ângulo polar fora do domínio físico', () => {
+    expect(() => calculateQubitState(-0.1, 0)).toThrow();
+    expect(() => calculateQubitState(Math.PI + 0.1, 0)).toThrow();
+  });
 });
 
 describe('Emaranhamento Quântico e Desigualdade de Bell CHSH', () => {
@@ -144,5 +240,9 @@ describe('Emaranhamento Quântico e Desigualdade de Bell CHSH', () => {
     expect(chsh.sParameter).toBeGreaterThan(2.0);
     expect(chsh.sParameter).toBeCloseTo(2 * Math.SQRT2, 2);
     expect(chsh.violatesClassicalBound).toBe(true);
+  });
+
+  it('produz anticorrelação perfeita para eixos coincidentes', () => {
+    expect(calculateQuantumCorrelation(32, 32)).toBeCloseTo(-1, 12);
   });
 });

@@ -16,7 +16,13 @@ export interface QubitState {
  * Calcula o estado quântico de um qubit a partir dos ângulos de Bloch theta e phi
  */
 export function calculateQubitState(thetaRad: number, phiRad: number): QubitState {
-  const theta = Math.max(0, Math.min(Math.PI, thetaRad));
+  if (!Number.isFinite(thetaRad) || thetaRad < 0 || thetaRad > Math.PI) {
+    throw new Error('O ângulo polar theta deve estar no intervalo [0, pi].');
+  }
+  if (!Number.isFinite(phiRad)) {
+    throw new Error('O ângulo azimutal phi deve ser um número finito.');
+  }
+  const theta = thetaRad;
   const phi = (phiRad % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
 
   const halfTheta = theta / 2;
@@ -33,9 +39,9 @@ export function calculateQubitState(thetaRad: number, phiRad: number): QubitStat
     prob0,
     prob1,
     bloch: {
-      x: Number(x.toFixed(4)),
-      y: Number(y.toFixed(4)),
-      z: Number(z.toFixed(4)),
+      x,
+      y,
+      z,
     },
   };
 }
@@ -75,6 +81,9 @@ export function applyPauliZGate(state: QubitState): QubitState {
  * Simula N medições projetivas com colapso na base computacional {|0>, |1>}
  */
 export function simulateMeasurements(state: QubitState, count: number = 100): { count0: number; count1: number } {
+  if (!Number.isInteger(count) || count < 0) {
+    throw new Error('A quantidade de medições deve ser um inteiro não negativo.');
+  }
   let count0 = 0;
   for (let i = 0; i < count; i++) {
     if (Math.random() < state.prob0) {

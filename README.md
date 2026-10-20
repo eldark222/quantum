@@ -109,6 +109,21 @@ npm run dev
 
 Depois, abra o endereço exibido pelo Vite no navegador.
 
+### Se `localhost:5173` for recusado
+
+O endereço local só funciona enquanto o processo do Vite estiver em execução.
+Se o navegador mostrar `ERR_CONNECTION_REFUSED`, abra um terminal na raiz do
+projeto e execute:
+
+```bash
+npm run dev
+```
+
+Mantenha esse terminal aberto e acesse o endereço exibido pelo Vite, normalmente
+`http://localhost:5173/`. Para verificar rapidamente se o servidor está ativo,
+recarregue a página ou teste `http://127.0.0.1:5173/`. Se a porta estiver
+ocupada, o Vite exibirá outra porta no terminal; use essa porta no navegador.
+
 ## Scripts disponíveis
 
 ```bash

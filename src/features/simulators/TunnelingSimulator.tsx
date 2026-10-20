@@ -231,7 +231,7 @@ export const TunnelingSimulator: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-bold text-white text-sm mb-1">2. Coeficiente de Transmissão Analítico de Morse-Condon</h4>
+              <h4 className="font-bold text-white text-sm mb-1">2. Coeficiente de Transmissão da Barreira Retangular</h4>
               <p>
                 Impondo a continuidade de <MathView math="\psi(x)" /> e de sua derivada <MathView math="\psi'(x)" /> em <MathView math="x = 0" /> e <MathView math="x = a" />, obtém-se analiticamente:
               </p>
@@ -255,7 +255,7 @@ export const TunnelingSimulator: React.FC = () => {
               />
               <YAxis
                 stroke="#64748b"
-                domain={[-1.8, 2.2]}
+                domain={[-1.8, 4.2]}
                 label={{ value: 'Re{ψ(x)} / Potencial', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
               />
               <Tooltip

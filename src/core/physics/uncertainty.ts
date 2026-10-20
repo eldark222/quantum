@@ -43,6 +43,12 @@ export function calculateGaussianMomentumDensity(pUnits: number, sigmaPUnits: nu
  * Simula a relação de incerteza conjugada de Heisenberg
  */
 export function simulateUncertainty(sigmaXNm: number, numPoints: number = 200): UncertaintyResult {
+  if (!Number.isFinite(sigmaXNm) || sigmaXNm <= 0) {
+    throw new Error('A incerteza espacial deve ser um número finito positivo.');
+  }
+  if (!Number.isInteger(numPoints) || numPoints < 1) {
+    throw new Error('O número de pontos deve ser um inteiro positivo.');
+  }
   const sigmaXMeters = sigmaXNm * 1e-9;
   // Pacote Gaussiano de incerteza mínima: \sigma_p = \hbar / (2 * \sigma_x)
   const sigmaPJoulesSecPerM = H_BAR / (2 * sigmaXMeters);
@@ -77,7 +83,7 @@ export function simulateUncertainty(sigmaXNm: number, numPoints: number = 200): 
   return {
     sigmaXNm,
     sigmaPJoulesSecPerM,
-    sigmaPEvSecPerNm: sigmaPJoulesSecPerM * 6.2415e18 * 1e-9,
+    sigmaPEvSecPerNm: sigmaPJoulesSecPerM / 1.602176634e-19 * 1e-9,
     productJoulesSec,
     productRatioToHbarHalf,
     pointsX,

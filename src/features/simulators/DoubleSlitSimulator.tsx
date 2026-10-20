@@ -338,9 +338,9 @@ export const DoubleSlitSimulator: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-bold text-white text-sm mb-1">2. Expressão Matemática Exata</h4>
+              <h4 className="font-bold text-white text-sm mb-1">2. Modelo de Fraunhofer</h4>
               <p>
-                Levando em conta a largura finita <MathView math="a" /> de cada fenda (difração de fenda simples):
+                Para uma tela suficientemente distante em relação às dimensões das fendas, levando em conta a largura finita <MathView math="a" /> de cada fenda:
               </p>
               <MathView block math="I(\theta) = I_0 \left(\frac{\sin\beta}{\beta}\right)^2 \cos^2\alpha, \quad \beta = \frac{\pi a}{\lambda}\sin\theta, \quad \alpha = \frac{\pi d}{\lambda}\sin\theta" />
             </div>
