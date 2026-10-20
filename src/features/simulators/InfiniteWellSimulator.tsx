@@ -283,7 +283,7 @@ export const InfiniteWellSimulator: React.FC = () => {
       {/* Visualização Científica dos Gráficos com Escalas Separadas */}
       <ScientificCard
         title="Visualizações da Mecânica Quântica 1D"
-        subtitle="Separação rigorosa entre amplitude de onda ψ(x) [nm^(-1/2)] e densidade de probabilidade |ψ(x)|² [nm^(-1)]"
+        subtitle="Separação rigorosa entre a amplitude de onda ψ(x) [nm⁻¹ᐟ²] e a densidade de probabilidade |ψ(x)|² [nm⁻¹]"
         badge="Rigor Científico"
         theoryTitle="Derivação Analítica da Equação de Schrödinger Independente do Tempo"
         theoryContent={
@@ -331,7 +331,7 @@ export const InfiniteWellSimulator: React.FC = () => {
                 activeView === 'separated' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Gráficos Lado a Lado (Recomendado)
+              Gráficos lado a lado (recomendado)
             </button>
             <button
               type="button"
@@ -356,11 +356,11 @@ export const InfiniteWellSimulator: React.FC = () => {
           <div className="text-xs font-mono text-slate-400 flex items-center gap-3">
             <span className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
-              <span>ψ_n(x) [nm^(-1/2)]</span>
+              <span>ψₙ(x) [nm⁻¹ᐟ²]</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-              <span>|ψ_n(x)|² [nm^(-1)]</span>
+              <span>|ψₙ(x)|² [nm⁻¹]</span>
             </span>
           </div>
         </div>
@@ -372,9 +372,9 @@ export const InfiniteWellSimulator: React.FC = () => {
             <div className={`space-y-2 ${activeView === 'wave' ? 'lg:col-span-2' : ''}`}>
               <div className="flex items-center justify-between text-xs text-slate-300 px-1">
                 <span className="font-semibold text-cyan-400">
-                  Função de Onda ψ_{n}(x) — Amplitude Quântica
+                  Função de onda ψₙ(x) — amplitude quântica
                 </span>
-                <span className="font-mono text-slate-400">Unidade: nm^(-1/2)</span>
+                <span className="font-mono text-slate-400">Unidade: nm⁻¹ᐟ²</span>
               </div>
               <div className="h-72 w-full rounded-xl bg-slate-950/70 border border-slate-800 p-2">
                 <ResponsiveContainer width="100%" height="100%">
@@ -390,11 +390,11 @@ export const InfiniteWellSimulator: React.FC = () => {
                     <YAxis
                       stroke="#64748b"
                       domain={['auto', 'auto']}
-                      label={{ value: 'ψ(x) [nm^(-1/2)]', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
+                      label={{ value: 'ψ(x) [nm⁻¹ᐟ²]', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
                     />
                     <Tooltip
                       contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc', fontSize: '12px' }}
-                      formatter={(val) => [`${val} nm^(-1/2)`, 'ψ(x)']}
+                      formatter={(val) => [`${val} nm⁻¹ᐟ²`, 'ψ(x)']}
                       labelFormatter={(label) => `x = ${label} nm`}
                     />
                     <ReferenceLine y={0} stroke="#475569" strokeDasharray="2 2" />
@@ -429,9 +429,9 @@ export const InfiniteWellSimulator: React.FC = () => {
             <div className={`space-y-2 ${activeView === 'prob' ? 'lg:col-span-2' : ''}`}>
               <div className="flex items-center justify-between text-xs text-slate-300 px-1">
                 <span className="font-semibold text-rose-400">
-                  Densidade de Probabilidade |ψ_{n}(x)|²
+                  Densidade de probabilidade |ψₙ(x)|²
                 </span>
-                <span className="font-mono text-slate-400">Unidade: nm^(-1)</span>
+                <span className="font-mono text-slate-400">Unidade: nm⁻¹</span>
               </div>
               <div className="h-72 w-full rounded-xl bg-slate-950/70 border border-slate-800 p-2">
                 <ResponsiveContainer width="100%" height="100%">
@@ -447,12 +447,12 @@ export const InfiniteWellSimulator: React.FC = () => {
                     <YAxis
                       stroke="#64748b"
                       domain={[0, 'auto']}
-                      label={{ value: '|ψ(x)|² [nm^(-1)]', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
+                      label={{ value: '|ψ(x)|² [nm⁻¹]', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
                     />
                     <Tooltip
                       contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc', fontSize: '12px' }}
                       formatter={(val, name) => [
-                        `${val} nm^(-1)`,
+                        `${val} nm⁻¹`,
                         name === 'probDensity' ? '|ψ(x)|² Quântico' : 'Densidade Clássica (1/L)',
                       ]}
                       labelFormatter={(label) => `x = ${label} nm`}
@@ -497,7 +497,7 @@ export const InfiniteWellSimulator: React.FC = () => {
                   key={idx}
                   className="px-2.5 py-1 rounded-md text-xs font-mono bg-amber-950/30 text-amber-300 border border-amber-500/20"
                 >
-                  x_{idx + 1} = {nodeX.toFixed(3)} nm ({((idx + 1) / n).toFixed(2)} L)
+                  x₍{idx + 1}₎ = {nodeX.toFixed(3)} nm ({((idx + 1) / n).toFixed(2)} L)
                 </span>
               ))}
             </div>

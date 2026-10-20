@@ -40,7 +40,7 @@ const APPLICATIONS: ApplicationItem[] = [
     category: 'Nanotecnologia',
     icon: <Microscope className="w-5 h-5 text-emerald-400" />,
     principle: 'Tunelamento Quântico de Elétrons',
-    mechanism: 'Uma ponta condutora atômica ultrafina é aproximada a frações de nanômetro de uma superfície. Elétrons tunelam através do vácuo. Como a corrente de tunelamento I decai exponencialmente com a distância z (I ∝ e^(-2κz)), variações de centésimos de angstrom na altura dos átomos produzem alterações gigantescas na corrente.',
+    mechanism: 'Uma ponta condutora atômica ultrafina é aproximada a frações de nanômetro de uma superfície. Elétrons tunelam através do vácuo. Como a corrente de tunelamento I decai exponencialmente com a distância z (I ∝ e⁻²κz), variações de centésimos de angstrom na altura dos átomos produzem alterações gigantescas na corrente.',
     impact: 'Permite visualizar e manipular átomos individuais sobre superfícies, inaugurando a era da nanotecnologia atômica experimental.',
     equation: 'I \\propto V \\cdot e^{-2\\kappa z}, \\quad \\kappa = \\frac{\\sqrt{2m\\Phi}}{\\hbar}',
   },
