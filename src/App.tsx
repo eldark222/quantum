@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { Header } from './components/layout/Header';
 import type { TabId } from './components/layout/Header';
-import { InfiniteWellSimulator } from './features/simulators/InfiniteWellSimulator';
-import { DoubleSlitSimulator } from './features/simulators/DoubleSlitSimulator';
-import { UncertaintySimulator } from './features/simulators/UncertaintySimulator';
-import { TunnelingSimulator } from './features/simulators/TunnelingSimulator';
-import { SuperpositionSimulator } from './features/simulators/SuperpositionSimulator';
-import { EntanglementSimulator } from './features/simulators/EntanglementSimulator';
-import { ApplicationsSection } from './features/education/ApplicationsSection';
-import { GlossarySection } from './features/education/GlossarySection';
-import { AboutSection } from './features/education/AboutSection';
 import { Atom, GitBranch } from 'lucide-react';
+
+const InfiniteWellSimulator = lazy(() => import('./features/simulators/InfiniteWellSimulator').then((module) => ({ default: module.InfiniteWellSimulator })));
+const DoubleSlitSimulator = lazy(() => import('./features/simulators/DoubleSlitSimulator').then((module) => ({ default: module.DoubleSlitSimulator })));
+const UncertaintySimulator = lazy(() => import('./features/simulators/UncertaintySimulator').then((module) => ({ default: module.UncertaintySimulator })));
+const TunnelingSimulator = lazy(() => import('./features/simulators/TunnelingSimulator').then((module) => ({ default: module.TunnelingSimulator })));
+const SuperpositionSimulator = lazy(() => import('./features/simulators/SuperpositionSimulator').then((module) => ({ default: module.SuperpositionSimulator })));
+const EntanglementSimulator = lazy(() => import('./features/simulators/EntanglementSimulator').then((module) => ({ default: module.EntanglementSimulator })));
+const ApplicationsSection = lazy(() => import('./features/education/ApplicationsSection').then((module) => ({ default: module.ApplicationsSection })));
+const GlossarySection = lazy(() => import('./features/education/GlossarySection').then((module) => ({ default: module.GlossarySection })));
+const AboutSection = lazy(() => import('./features/education/AboutSection').then((module) => ({ default: module.AboutSection })));
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('infinite-well');
@@ -47,7 +48,15 @@ export const App: React.FC = () => {
 
       {/* Conteúdo Principal */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {renderContent()}
+        <Suspense
+          fallback={
+            <div className="flex min-h-96 items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/60 text-sm text-slate-400">
+              Carregando experimento...
+            </div>
+          }
+        >
+          {renderContent()}
+        </Suspense>
       </main>
 
       {/* Rodapé Científico */}

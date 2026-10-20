@@ -36,6 +36,11 @@ Nenhum arquivo de código-fonte foi removido nesta limpeza.
   minificação. Não é uma falha funcional, mas é um gargalo de carregamento
   inicial a ser tratado com divisão de código.
 
+Após a etapa de code splitting por seção, o build passou a gerar um chunk
+inicial de aproximadamente 245,05 kB minificados (75,66 kB gzip) e chunks
+separados para os simuladores e seções educacionais. A linha de base acima é
+mantida para comparação histórica.
+
 ### Alterações introduzidas nesta etapa
 
 Nenhuma alteração foi feita em fórmulas, componentes ou dependências de
@@ -73,7 +78,6 @@ comportamentos ainda precisam de validação automatizada.
 
 ### Performance
 
-O bundle inicial grande é o principal gargalo mensurável desta etapa. A
-divisão por simulador e carregamento sob demanda são candidatos para uma
-etapa posterior, acompanhados de uma medição antes/depois.
-
+A linha de base identificou um bundle inicial grande. A divisão por simulador
+foi aplicada posteriormente em `App.tsx` e sua medição antes/depois está
+registrada acima; novas features ainda devem preservar e reavaliar esse padrão.

@@ -118,9 +118,9 @@ uma sequência aleatória específica.
 - Valide a navegação móvel e o overflow de gráficos em viewport estreito.
 - Não faça cálculos caros em cada render; use `useMemo` apenas quando houver
   dependência clara.
-- O bundle inicial atual é grande. Ao introduzir muitos módulos, considere
-  `import()` dinâmico por aba e meça o resultado no build, em vez de aumentar
-  arbitrariamente `chunkSizeWarningLimit`.
+- A navegação usa `React.lazy`/`import()` dinâmico por aba. Ao introduzir novos
+  módulos, preserve esse padrão e meça o resultado no build, em vez de
+  aumentar arbitrariamente `chunkSizeWarningLimit`.
 - Canvas deve cancelar `requestAnimationFrame` no cleanup, como no simulador
   de dupla fenda.
 

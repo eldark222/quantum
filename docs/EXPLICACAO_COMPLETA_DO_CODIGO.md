@@ -248,7 +248,10 @@ typecheck, testes e build em Node 22.
 
 ## 8. Limitações conhecidas
 
-- O bundle inicial grande ainda precisa de code splitting.
+- A navegação agora usa `React.lazy` e `Suspense` em `App.tsx`: cada simulador
+  e seção educacional é carregado sob demanda. O build medido após essa mudança
+  produziu um chunk inicial de 245,05 kB minificados (75,66 kB gzip), contra
+  999,55 kB minificados na linha de base.
 - A navegação é estado local e não oferece URLs profundas.
 - `PocoPotencial.tsx` é um componente legado não importado por `App`; ele
   duplica o poço e contém texto com codificação quebrada. Não deve ser usado
@@ -257,4 +260,3 @@ typecheck, testes e build em Node 22.
   mecânica clássica ou exercícios avaliativos.
 - A renderização KaTeX usa `dangerouslySetInnerHTML` internamente; entradas
   externas não são suportadas.
-
