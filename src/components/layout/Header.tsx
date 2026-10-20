@@ -77,7 +77,12 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleSelect('infinite-well')}>
+          <button
+            type="button"
+            onClick={() => handleSelect('infinite-well')}
+            className="flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 rounded-xl"
+            aria-label="Voltar ao simulador do poço de potencial infinito"
+          >
             <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-cyan-400">
               <Atom className="w-6 h-6 animate-pulse" />
             </div>
@@ -94,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {
                 Laboratório Científico Interativo
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Navegação Principal">
@@ -126,6 +131,8 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800 focus:outline-none"
               aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu de navegação'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -135,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => {
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-2xl px-4 pt-2 pb-6 space-y-4">
+        <div id="mobile-navigation" className="lg:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-2xl px-4 pt-2 pb-6 space-y-4">
           <div>
             <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 px-3 py-1">
               Simuladores Quânticos
