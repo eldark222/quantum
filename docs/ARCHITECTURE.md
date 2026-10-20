@@ -39,7 +39,8 @@ src/
   modelo ou grupo de conversões relacionado: poço infinito, dupla fenda,
   incerteza, tunelamento, superposição, emaranhamento, constantes e unidades.
 - **Matemática:** `core/math` contém algoritmos puros reutilizáveis. Os módulos
-  atuais resolvem sistemas lineares 2×2 e operações de matrizes 2×2.
+  atuais resolvem sistemas lineares 2×2, operações de matrizes 2×2 e análise
+  espectral de matrizes reais 2×2.
 - **Features:** `features/simulators` adapta os modelos físicos para controles,
   gráficos e interpretação. `features/mathematics` apresenta conceitos
   matemáticos aplicados. `features/education` mantém o conteúdo conceitual e as

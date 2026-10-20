@@ -15,6 +15,36 @@ import { calculateQuantumCorrelation, evaluateChshInequality } from '../core/phy
 import { calculateDoubleSlitIntensity, calculateDeBroglieWavelengthNm } from '../core/physics/doubleSlit';
 import { solveLinearSystem2x2 } from '../core/math/linearSystem';
 import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../core/math/matrix2x2';
+import { analyzeEigenvalues2x2 } from '../core/math/eigen2x2';
+
+describe('Álgebra linear: autovalores 2×2', () => {
+  it('calcula autovalores e autovetores reais distintos', () => {
+    const result = analyzeEigenvalues2x2({ a: 2, b: 1, c: 1, d: 3 });
+    expect(result.status).toBe('real-distinct');
+    expect(result.eigenvalues.map((value) => value.real)).toEqual([3.618033988749895, 1.381966011250105]);
+    result.eigenvalues.forEach((value) => {
+      expect(value.eigenvector).toBeDefined();
+    });
+  });
+
+  it('classifica autovalores complexos conjugados', () => {
+    const result = analyzeEigenvalues2x2({ a: 0, b: -1, c: 1, d: 0 });
+    expect(result.status).toBe('complex-conjugate');
+    expect(result.eigenvalues[0].real).toBeCloseTo(0);
+    expect(Math.abs(result.eigenvalues[0].imaginary)).toBeCloseTo(1);
+    expect(result.eigenvalues[0].eigenvector).toBeUndefined();
+  });
+
+  it('distingue matriz escalar e caso repetido degenerado', () => {
+    const scalar = analyzeEigenvalues2x2({ a: 2, b: 0, c: 0, d: 2 });
+    const defective = analyzeEigenvalues2x2({ a: 2, b: 1, c: 0, d: 2 });
+    expect(scalar.status).toBe('real-repeated');
+    expect(scalar.eigenspaceDimension).toBe(2);
+    expect(defective.status).toBe('real-repeated');
+    expect(defective.eigenspaceDimension).toBe(1);
+    expect(() => analyzeEigenvalues2x2({ a: Number.NaN, b: 0, c: 0, d: 1 })).toThrow();
+  });
+});
 
 describe('Álgebra linear: matrizes 2×2', () => {
   it('calcula determinante e traço', () => {

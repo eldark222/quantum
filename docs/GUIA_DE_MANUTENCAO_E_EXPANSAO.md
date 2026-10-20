@@ -81,6 +81,11 @@ O módulo de matrizes 2×2 segue o mesmo padrão e deve ser reutilizado por futu
 experiências de autovalores, transformações geométricas e estados quânticos,
 sem duplicar determinantes ou inversões na interface.
 
+A análise espectral em `src/core/math/eigen2x2.ts` reutiliza traço e
+determinante conceitualmente, mas mantém sua própria validação e classificação
+de casos complexos e degenerados. A interface não apresenta autovetores reais
+quando os autovalores são complexos.
+
 ## 5. Conteúdo educacional
 
 Conteúdo novo deve informar:

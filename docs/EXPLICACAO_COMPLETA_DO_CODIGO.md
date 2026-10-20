@@ -80,6 +80,13 @@ calcula determinante e traço, aplica uma matriz a um vetor e constrói a invers
 apenas quando o determinante está fora da tolerância numérica. A interface mostra
 explicitamente o caso singular, em vez de produzir divisões indefinidas.
 
+O módulo [eigen2x2.ts](../src/core/math/eigen2x2.ts) resolve o polinômio
+característico de uma matriz real 2×2. Ele classifica discriminante positivo,
+zero ou negativo, fornece autovetores reais quando aplicável e identifica a
+dimensão do autoespaço no caso de autovalor repetido. Autovalores complexos são
+representados como pares conjugados, sem alegar a existência de autovetores
+reais.
+
 ### Núcleo científico
 
 Os arquivos em [src/core/physics](../src/core/physics) não importam React,
