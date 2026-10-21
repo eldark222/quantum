@@ -36,17 +36,17 @@ export const ELEMENTARY_CHARGE = 1.602176634e-19; // C (valor exato SI)
 /**
  * Massa de repouso do elétron: m_e em kg
  */
-export const ELECTRON_MASS = 9.1093837015e-31; // kg
+export const ELECTRON_MASS = 9.1093837139e-31; // kg
 
 /**
  * Massa de repouso do próton: m_p em kg
  */
-export const PROTON_MASS = 1.67262192369e-27; // kg
+export const PROTON_MASS = 1.67262192595e-27; // kg
 
 /**
  * Massa de repouso do nêutron: m_n em kg
  */
-export const NEUTRON_MASS = 1.67492749804e-27; // kg
+export const NEUTRON_MASS = 1.67492750056e-27; // kg
 
 /**
  * Massa do múon: m_\mu em kg
@@ -61,7 +61,7 @@ export const BOLTZMANN_CONSTANT = 1.380649e-23; // J/K (valor exato SI)
 /**
  * Permissividade elétrica do vácuo: \varepsilon_0 em F/m
  */
-export const VACUUM_PERMITTIVITY = 8.8541878128e-12; // F/m
+export const VACUUM_PERMITTIVITY = 8.8541878188e-12; // F/m
 
 /**
  * Tabela de partículas disponíveis nos simuladores com massas em kg

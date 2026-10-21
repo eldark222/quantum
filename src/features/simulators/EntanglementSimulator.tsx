@@ -63,13 +63,13 @@ export const EntanglementSimulator: React.FC = () => {
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
             <Network className="w-3.5 h-3.5" />
-            <span>Não-Localidade Quântica • Teorema de Bell</span>
+            <span>Não localidade quântica • Teorema de Bell</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Emaranhamento Quântico & Teste de Bell CHSH
           </h1>
           <p className="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Examine as correlações não-locais de pares EPR no estado singleto, a violação experimental das desigualdades de Bell e o teorema da não-comunicação superluminal.
+            Examine as correlações não locais de pares EPR de spin-1/2 no estado singleto, a violação das desigualdades de Bell e o teorema da não comunicação.
           </p>
         </div>
       </div>
@@ -91,7 +91,7 @@ export const EntanglementSimulator: React.FC = () => {
             step={5}
             unit="graus"
             onChange={setAngleA}
-            description="Orientação do polarizador ou medição de spin de Alice."
+            description="Direção (no plano) em que Alice mede o spin."
           />
 
           <ParameterControl
@@ -104,7 +104,7 @@ export const EntanglementSimulator: React.FC = () => {
             step={5}
             unit="graus"
             onChange={setAngleB}
-            description="Orientação do polarizador ou medição de spin de Bob."
+            description="Direção (no plano) em que Bob mede o spin."
           />
 
           <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
@@ -113,7 +113,7 @@ export const EntanglementSimulator: React.FC = () => {
               Δθ = |θ_A - θ_B| = {deltaTheta}°
             </div>
             <p className="text-[11px] text-slate-400">
-              Se Δθ = 0°, os resultados são perfeitamente anti-correlacionados (E = -1.0). Se Δθ = 180°, são idênticos (E = +1.0).
+              Se Δθ = 0°, os resultados são perfeitamente anticorrelacionados (E = −1). Se Δθ = 180°, são perfeitamente correlacionados (E = +1).
             </p>
           </div>
         </div>
@@ -155,9 +155,9 @@ export const EntanglementSimulator: React.FC = () => {
             variant="default"
           />
           <MetricBadge
-            label="Comunicação FTL?"
-            value="PROIBIDA"
-            subtext="Teorema de Não-Comunicação"
+            label="Comunicação superluminal?"
+            value="IMPOSSÍVEL"
+            subtext="Teorema da não comunicação"
             variant="rose"
           />
         </div>
@@ -165,8 +165,8 @@ export const EntanglementSimulator: React.FC = () => {
 
       {/* Gráfico de Correlação Quântica vs Modelo Clássico */}
       <ScientificCard
-        title="Curva de Correlação Quântica vs. Limite de Variáveis Ocultas Locais"
-        subtitle="A física quântica prevê uma curva cossenoidal suave, enquanto teorias locais realistas restringem-se a limites poligonais rígidos"
+        title="Correlação Quântica vs. Modelo Local de Variáveis Ocultas"
+        subtitle="A mecânica quântica prevê uma curva cossenoidal; o modelo local linear de Bell reproduz os extremos, mas não os ângulos intermediários"
         badge="Teorema de Bell (1964)"
         theoryTitle="Fundamentação do Paradoxo EPR, Teorema de Bell e Não-Comunicação"
         theoryContent={
@@ -194,7 +194,7 @@ export const EntanglementSimulator: React.FC = () => {
               </p>
               <MathView block math="|S_{\text{quântico}}| = |-\cos(45^\circ) - (-\cos(135^\circ)) - \cos(45^\circ) - \cos(45^\circ)| = 2\sqrt{2} \approx 2.8284 > 2" />
               <p>
-                Este resultado foi verificado experimentalmente com precisão extrema (Prêmio Nobel de Física de 2022 para Alain Aspect, John Clauser e Anton Zeilinger), refutando definitivamente o realismo local.
+                Este resultado foi verificado experimentalmente com precisão extrema (Prêmio Nobel de Física de 2022 para Alain Aspect, John Clauser e Anton Zeilinger), excluindo teorias de variáveis ocultas locais (os testes "sem brechas" de 2015 fecharam as principais lacunas experimentais).
               </p>
             </div>
 
@@ -204,7 +204,7 @@ export const EntanglementSimulator: React.FC = () => {
                 3. Por que o Emaranhamento NÃO Permite Transmitir Mensagens Mais Rápido que a Luz?
               </h4>
               <p className="text-slate-300 text-xs leading-relaxed">
-                Pelo <strong>Teorema da Não-Comunicação (No-Communication Theorem)</strong>, a matriz de densidade reduzida de Alice é perfeitamente proporcional à identidade <MathView math="\rho_A = \frac{1}{2}I" />. Isso significa que, localmente, cada medição de Alice é puro ruído estatístico (<MathView math="50\%" /> para cima, <MathView math="50\%" /> para baixo), totalmente indistinguível de um lançamento de moeda aleatório. Alice só consegue constatar a correlação quando se encontra com Bob ou recebe os dados dele por um canal clássico convencional, cuja velocidade é limitada pela velocidade da luz <MathView math="c" />.
+                Pelo <strong>teorema da não comunicação (no-communication theorem)</strong>, a matriz densidade reduzida de Alice é proporcional à identidade, independentemente do que Bob mede <MathView math="\rho_A = \frac{1}{2}I" />. Isso significa que, localmente, cada medição de Alice é puro ruído estatístico (<MathView math="50\%" /> para cima, <MathView math="50\%" /> para baixo), totalmente indistinguível de um lançamento de moeda aleatório. Alice só consegue constatar a correlação quando se encontra com Bob ou recebe os dados dele por um canal clássico convencional, cuja velocidade é limitada pela velocidade da luz <MathView math="c" />.
               </p>
             </div>
           </div>
@@ -230,7 +230,7 @@ export const EntanglementSimulator: React.FC = () => {
                 contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc', fontSize: '12px' }}
                 formatter={(val, name) => [
                   `${val}`,
-                  name === 'quantum' ? 'Correlação Quântica (Cosseno)' : 'Limite Realista Local (Bell)',
+                  name === 'quantum' || name === 'Correlação Quântica' ? 'Correlação Quântica (Cosseno)' : 'Modelo Local Linear (Bell)',
                 ]}
                 labelFormatter={(lbl) => `Δθ = ${lbl}°`}
               />
@@ -243,7 +243,7 @@ export const EntanglementSimulator: React.FC = () => {
                 strokeDasharray="4 4"
                 strokeWidth={1.5}
                 dot={false}
-                name="Limite Realista Local"
+                name="Modelo Local Linear"
                 isAnimationActive={false}
               />
               <Line
