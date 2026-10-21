@@ -18,6 +18,7 @@ import { determinant2x2, inverse2x2, multiplyMatrixVector, trace2x2 } from '../c
 import { analyzeEigenvalues2x2 } from '../core/math/eigen2x2';
 import { decomposeSymmetric2x2 } from '../core/math/spectral2x2';
 import { centralDifference, getFunctionDefinition, numericalDerivative, sampleDerivative } from '../core/math/numericalDifferentiation';
+import { clampCalculusPoint, getRangeForFunction } from '../features/mathematics/CalculusSection';
 
 describe('Cálculo diferencial numérico', () => {
   it('aproxima derivadas conhecidas pela diferença central', () => {
@@ -51,6 +52,14 @@ describe('Cálculo diferencial numérico', () => {
     expect(() => centralDifference(Math.sin, 0, 0)).toThrow();
     expect(() => sampleDerivative('sine', 1, 1)).toThrow();
     expect(() => sampleDerivative('sine', 0, 1, 1)).toThrow();
+  });
+
+  it('normaliza ponto para o domínio da função selecionada no módulo de cálculo', () => {
+    expect(getRangeForFunction('logarithm')).toEqual({ minimum: 0.1, maximum: 3 });
+    expect(clampCalculusPoint(-1, 'logarithm')).toBe(0.1);
+    expect(clampCalculusPoint(4, 'logarithm')).toBe(3);
+    expect(clampCalculusPoint(1.25, 'logarithm')).toBe(1.25);
+    expect(clampCalculusPoint(10, 'sine')).toBe(3);
   });
 });
 
