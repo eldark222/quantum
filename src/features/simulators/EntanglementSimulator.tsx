@@ -143,7 +143,7 @@ export const EntanglementSimulator: React.FC = () => {
           <MetricBadge
             label="Limite de Tsirelson"
             symbol="2\sqrt{2}"
-            value="2.828"
+            value="2,828"
             subtext="Máximo quântico absoluto"
             variant="purple"
           />
@@ -192,7 +192,7 @@ export const EntanglementSimulator: React.FC = () => {
               <p>
                 Com os ângulos de Tsirelson (<MathView math="a = 0^\circ, a' = 90^\circ, b = 45^\circ, b' = 135^\circ" />), a mecânica quântica produz:
               </p>
-              <MathView block math="|S_{\text{quântico}}| = |-\cos(45^\circ) - (-\cos(135^\circ)) - \cos(45^\circ) - \cos(45^\circ)| = 2\sqrt{2} \approx 2.8284 > 2" />
+              <MathView block math="|S_{\text{quântico}}| = |-\cos(45^\circ) - (-\cos(135^\circ)) - \cos(45^\circ) - \cos(45^\circ)| = 2\sqrt{2} \approx 2{,}8284 > 2" />
               <p>
                 Este resultado foi verificado experimentalmente com precisão extrema (Prêmio Nobel de Física de 2022 para Alain Aspect, John Clauser e Anton Zeilinger), excluindo teorias de variáveis ocultas locais (os testes "sem brechas" de 2015 fecharam as principais lacunas experimentais).
               </p>

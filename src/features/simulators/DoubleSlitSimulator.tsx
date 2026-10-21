@@ -346,9 +346,9 @@ export const DoubleSlitSimulator: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-bold text-white text-sm mb-1">3. Medição e Teorema da Decoerência</h4>
+              <h4 className="font-bold text-white text-sm mb-1">3. Medição e decoerência</h4>
               <p>
-                Ao introduzir um detector para descobrir por qual fenda a partícula passou, o sistema entrelaça-se com os graus de liberdade do medidor. A matriz de densidade perde as coerências quânticas fora da diagonal (<MathView math="\rho_{12} \to 0" />), resultando na simples soma clássica de intensidades <MathView math="I_{\text{clássico}} = I_1 + I_2" /> sem termo de interferência.
+                Ao introduzir um detector capaz de registrar por qual fenda a partícula passou, o sistema torna-se emaranhado com os graus de liberdade do medidor. A matriz de densidade perde as coerências quânticas fora da diagonal (<MathView math="\rho_{12} \to 0" />), resultando na simples soma clássica de intensidades <MathView math="I_{\text{clássico}} = I_1 + I_2" /> sem termo de interferência.
               </p>
             </div>
           </div>

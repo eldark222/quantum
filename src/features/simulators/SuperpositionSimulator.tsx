@@ -298,7 +298,7 @@ export const SuperpositionSimulator: React.FC = () => {
               </p>
               <MathView block math="|\psi\rangle = \alpha |0\rangle + \beta |1\rangle, \quad \alpha, \beta \in \mathbb{C}, \quad |\alpha|^2 + |\beta|^2 = 1" />
               <p>
-                Eliminando uma fase global arbitrária inobservável (<MathView math="e^{i\gamma}" />), qualquer estado puro pode ser parametrizado unicamente por dois ângulos reais <MathView math="\theta \in [0, \pi]" /> e <MathView math="\phi \in [0, 2\pi]" />:
+                Eliminando uma fase global arbitrária inobservável (<MathView math="e^{i\gamma}" />), qualquer estado puro pode ser parametrizado unicamente por dois ângulos reais <MathView math="\theta \in [0, \pi]" /> e <MathView math="\phi \in [0, 2\pi)" />:
               </p>
               <MathView block math="|\psi\rangle = \cos\left(\frac{\theta}{2}\right)|0\rangle + e^{i\phi}\sin\left(\frac{\theta}{2}\right)|1\rangle" />
             </div>

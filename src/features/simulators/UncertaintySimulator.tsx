@@ -214,7 +214,7 @@ export const UncertaintySimulator: React.FC = () => {
             </ResponsiveContainer>
           </div>
           <p className="text-[11px] text-slate-400">
-            Pela relação de Fourier, a largura no momento é inversamente proporcional a <MathView math="\Delta x" /> (<MathView math="\Delta p \propto 1/\Delta x" />).
+            Pela relação de Fourier, a largura no momento é inversamente proporcional a <MathView math="\Delta x" />; para este pacote gaussiano de incerteza mínima, <MathView math="\Delta p = \hbar/(2\,\Delta x)" />.
           </p>
         </div>
       </div>
@@ -224,7 +224,7 @@ export const UncertaintySimulator: React.FC = () => {
         title="Rigor Científico: Incerteza Estatística vs. Efeito do Observador"
         subtitle="Esclarecimento de equívocos conceituais comuns sobre o princípio de Heisenberg"
         badge="Fundamento Teórico"
-        theoryTitle="Derivação Formal a partir da Desigualdade de Robertson-Schrödinger"
+        theoryTitle="Derivação Formal a partir da Desigualdade de Robertson"
         theoryContent={
           <div className="space-y-4">
             <div>

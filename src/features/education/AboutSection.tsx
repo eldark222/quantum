@@ -44,7 +44,7 @@ export const AboutSection: React.FC = () => {
           <ul className="text-xs text-slate-300 space-y-2 list-disc list-inside">
             <li><strong>Separação de Responsabilidades:</strong> Lógica física isolada em funções puras independentes da UI.</li>
             <li><strong>Acessibilidade & Responsividade:</strong> Navegação por teclado, leitor de tela e suporte a telas móveis.</li>
-            <li><strong>Desempenho Otimizado:</strong> Renderização eficiente com <MathView math="\text{memo}" />, Canvas 2D acelerado por hardware e pacotes enxutos sem bibliotecas desnecessárias.</li>
+            <li><strong>Desempenho Otimizado:</strong> Cálculos memorizados com <code className="font-mono text-cyan-300">useMemo</code>, Canvas 2D no simulador de dupla fenda e carregamento sob demanda dos módulos.</li>
           </ul>
         </div>
 

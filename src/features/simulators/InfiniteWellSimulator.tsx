@@ -183,7 +183,7 @@ export const InfiniteWellSimulator: React.FC = () => {
               </div>
             </div>
             <p className="text-[11px] text-slate-400">
-              Integral exata analítica <MathView math="P = \int_{x_1}^{x_2} |\psi_n(x)|^2 dx" />
+              Integral exata analítica <MathView math="P = \int_{x_1}^{x_2} |\psi_n(x)|^2 \, dx" />
             </p>
           </div>
         </div>
@@ -479,7 +479,7 @@ export const InfiniteWellSimulator: React.FC = () => {
                 </ResponsiveContainer>
               </div>
               <p className="text-[11px] text-slate-400 px-1">
-                Estritamente não-negativa. A integral sobre toda a caixa <MathView math="\int_0^L |\psi|^2 dx = 1" />. A linha tracejada cinza exibe a previsão clássica uniforme <MathView math="1/L" />.
+                Sempre não negativa. A integral sobre toda a caixa vale <MathView math="\int_0^L |\psi|^2 \, dx = 1" />. A linha tracejada cinza exibe a previsão clássica uniforme <MathView math="1/L" />.
               </p>
             </div>
           )}

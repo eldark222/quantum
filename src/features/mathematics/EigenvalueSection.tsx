@@ -94,8 +94,9 @@ export const EigenvalueSection: React.FC = () => {
             <p>
               Quando o discriminante é negativo, a matriz real possui um par
               complexo conjugado e não há autovetores reais correspondentes.
-              Em um autovalor repetido, a dimensão do autoespaço distingue uma
-              matriz escalar de um caso degenerado não diagonalizável.
+              Em um autovalor repetido de uma matriz 2×2, a dimensão do
+              autoespaço distingue a matriz escalar (dimensão 2) de uma matriz
+              defectiva, não diagonalizável (dimensão 1).
             </p>
           </div>
         }
