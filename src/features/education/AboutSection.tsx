@@ -42,7 +42,7 @@ export const AboutSection: React.FC = () => {
             O <strong>Quantum Lab</strong> foi concebido para estudantes e pesquisadores de Ciência da Computação, Física e Engenharia. Seu objetivo central é erradicar simulações puramente estéticas ou desprovidas de unidades que proliferam na web, substituindo-as por modelos com rigor analítico, conversão dimensional estrita e testes automatizados.
           </p>
           <ul className="text-xs text-slate-300 space-y-2 list-disc list-inside">
-            <li><strong>Separação de Preocupações:</strong> Lógica física isolada em funções puras independentes da UI.</li>
+            <li><strong>Separação de Responsabilidades:</strong> Lógica física isolada em funções puras independentes da UI.</li>
             <li><strong>Acessibilidade & Responsividade:</strong> Navegação por teclado, leitor de tela e suporte a telas móveis.</li>
             <li><strong>Desempenho Otimizado:</strong> Renderização eficiente com <MathView math="\text{memo}" />, Canvas 2D acelerado por hardware e pacotes enxutos sem bibliotecas desnecessárias.</li>
           </ul>
@@ -76,7 +76,7 @@ export const AboutSection: React.FC = () => {
             </div>
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-slate-400 block mb-0.5">Testes</span>
-              <span className="text-cyan-300 font-bold">Vitest (Test-Driven)</span>
+              <span className="text-cyan-300 font-bold">Vitest</span>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ export const AboutSection: React.FC = () => {
                 <td className="py-2.5 pr-4 text-white">Constante de Dirac (Planck reduzida)</td>
                 <td className="py-2.5 pr-4 text-cyan-400 font-serif font-bold">ℏ = h / 2π</td>
                 <td className="py-2.5 pr-4">{formatScientific(H_BAR, 8)}</td>
-                <td className="py-2.5">J · s</td>
+                <td className="py-2.5">J · s (Exato, derivado de h)</td>
               </tr>
               <tr>
                 <td className="py-2.5 pr-4 text-white">Velocidade da luz no vácuo</td>
@@ -130,19 +130,19 @@ export const AboutSection: React.FC = () => {
               <tr>
                 <td className="py-2.5 pr-4 text-white">Massa de repouso do elétron</td>
                 <td className="py-2.5 pr-4 text-cyan-400 font-serif font-bold">m_e</td>
-                <td className="py-2.5 pr-4">{formatScientific(ELECTRON_MASS, 8)}</td>
+                <td className="py-2.5 pr-4">{formatScientific(ELECTRON_MASS, 10)}</td>
                 <td className="py-2.5">kg</td>
               </tr>
               <tr>
                 <td className="py-2.5 pr-4 text-white">Massa de repouso do próton</td>
                 <td className="py-2.5 pr-4 text-cyan-400 font-serif font-bold">m_p</td>
-                <td className="py-2.5 pr-4">{formatScientific(PROTON_MASS, 8)}</td>
+                <td className="py-2.5 pr-4">{formatScientific(PROTON_MASS, 11)}</td>
                 <td className="py-2.5">kg</td>
               </tr>
               <tr>
                 <td className="py-2.5 pr-4 text-white">Massa de repouso do nêutron</td>
                 <td className="py-2.5 pr-4 text-cyan-400 font-serif font-bold">m_n</td>
-                <td className="py-2.5 pr-4">{formatScientific(NEUTRON_MASS, 8)}</td>
+                <td className="py-2.5 pr-4">{formatScientific(NEUTRON_MASS, 11)}</td>
                 <td className="py-2.5">kg</td>
               </tr>
             </tbody>
@@ -171,13 +171,13 @@ export const AboutSection: React.FC = () => {
             <strong className="text-white">Feynman, R. P., Leighton, R. B., & Sands, M. (1965).</strong> <em>The Feynman Lectures on Physics, Vol. III: Quantum Mechanics</em>. Addison-Wesley. (O experimento da dupla fenda e a amplitude de probabilidade).
           </li>
           <li>
-            <strong className="text-white">NIST Physics Laboratory (2022).</strong> <em>CODATA Internationally Recommended 2022 Values of the Fundamental Physical Constants</em>. National Institute of Standards and Technology.
+            <strong className="text-white">Mohr, P. J., et al. — NIST (2024).</strong> <em>CODATA Internationally Recommended 2022 Values of the Fundamental Physical Constants</em>. National Institute of Standards and Technology.
           </li>
           <li>
             <strong className="text-white">Strang, G. (2016).</strong> <em>Introduction to Linear Algebra</em> (5ª edição). Wellesley-Cambridge Press. (Autovalores, autovetores, matrizes simétricas e decomposição espectral).
           </li>
           <li>
-            <strong className="text-white">MIT OpenCourseWare (2010).</strong> <em>18.06SC Linear Algebra</em>. Material didático aberto sobre subespaços, autovalores e diagonalização.
+            <strong className="text-white">MIT OpenCourseWare (2011).</strong> <em>18.06SC Linear Algebra</em>. Material didático aberto sobre subespaços, autovalores e diagonalização.
           </li>
         </ol>
       </div>

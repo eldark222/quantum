@@ -11,6 +11,7 @@ import {
 import { Activity, ShieldCheck, HelpCircle } from 'lucide-react';
 import { simulateUncertainty } from '../../core/physics/uncertainty';
 import { formatScientific } from '../../core/physics/units';
+import { H_BAR } from '../../core/physics/constants';
 import { ParameterControl } from '../../components/common/ParameterControl';
 import { MetricBadge } from '../../components/common/MetricBadge';
 import { ScientificCard } from '../../components/common/ScientificCard';
@@ -36,7 +37,7 @@ export const UncertaintySimulator: React.FC = () => {
             Princípio da Incerteza de Heisenberg & Pares Conjugados
           </h1>
           <p className="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Examine a relação fundamental entre a localização espacial <MathView math="\Delta x" /> e a dispersão do momento linear <MathView math="\Delta p" /> em um pacote de onda Gaussiano ótimo.
+            Examine a relação fundamental entre a localização espacial <MathView math="\Delta x" /> e a dispersão do momento linear <MathView math="\Delta p" /> em um pacote de onda gaussiano de incerteza mínima.
           </p>
         </div>
       </div>
@@ -68,7 +69,7 @@ export const UncertaintySimulator: React.FC = () => {
                 <span>Condição de Incerteza Mínima</span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
-                O pacote de ondas Gaussiano atinge exatamente o limite inferior absoluto de Heisenberg:
+                O pacote de ondas gaussiano atinge exatamente o limite inferior absoluto de Heisenberg:
               </p>
               <MathView block math="\Delta x \cdot \Delta p = \frac{\hbar}{2}" />
             </div>
@@ -81,11 +82,11 @@ export const UncertaintySimulator: React.FC = () => {
             symbol="\Delta x"
             value={`${simulation.sigmaXNm.toFixed(3)}`}
             unit="nm"
-            subtext="Desvio padrão no espaço x"
+            subtext="Desvio-padrão no espaço x"
             variant="cyan"
           />
           <MetricBadge
-            label="Incerteza Momento"
+            label="Incerteza no Momento"
             symbol="\Delta p"
             value={formatScientific(simulation.sigmaPJoulesSecPerM, 2)}
             unit="kg·m/s"
@@ -95,15 +96,15 @@ export const UncertaintySimulator: React.FC = () => {
           <MetricBadge
             label="Produto de Incertezas"
             symbol="\Delta x \Delta p"
-            value="0.500"
+            value={(simulation.productJoulesSec / H_BAR).toFixed(3)}
             unit="ℏ"
-            subtext="Mínimo teórico absoluto"
+            subtext="Mínimo teórico: 0.500 ℏ"
             variant="emerald"
           />
           <MetricBadge
             label="Constante de Dirac"
             symbol="\hbar"
-            value="1.055 × 10⁻³⁴"
+            value={formatScientific(H_BAR, 3)}
             unit="J·s"
             subtext="Constante de Planck reduzida"
             variant="default"
@@ -112,13 +113,13 @@ export const UncertaintySimulator: React.FC = () => {
             label="Comutador [x̂, p̂]"
             symbol="[\hat{x}, \hat{p}]"
             value="iℏ"
-            subtext="Operadores não-comutativos"
+            subtext="Operadores não comutativos"
             variant="amber"
           />
           <MetricBadge
             label="Razão ao Limite Mínimo"
             symbol="\Delta x \Delta p / (\hbar/2)"
-            value="1.000×"
+            value={`${simulation.productRatioToHbarHalf.toFixed(3)}×`}
             subtext="Satura a desigualdade"
             variant="default"
           />
@@ -192,7 +193,7 @@ export const UncertaintySimulator: React.FC = () => {
                 />
                 <YAxis
                   stroke="#64748b"
-                  label={{ value: '|φ(p)|²', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
+                  label={{ value: '|φ(p)|² [por Δp]', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
                 />
                 <Tooltip
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc', fontSize: '12px' }}
@@ -233,7 +234,7 @@ export const UncertaintySimulator: React.FC = () => {
               </p>
               <MathView block math="\sigma_A \sigma_B \ge \frac{1}{2} \left| \langle [\hat{A}, \hat{B}] \rangle \right|" />
               <p>
-                Para posição e momento linear, a relação fundamental de comutação canônica de Dirac-Heisenberg é:
+                Para posição e momento linear, a relação de comutação canônica é:
               </p>
               <MathView block math="[\hat{x}, \hat{p}] = i\hbar \hat{I} \implies \left| \langle [\hat{x}, \hat{p}] \rangle \right| = \hbar \implies \Delta x \Delta p \ge \frac{\hbar}{2}" />
             </div>

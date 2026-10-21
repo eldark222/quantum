@@ -49,7 +49,15 @@ export function formatScientific(value: number, precision: number = 3): string {
   if (abs >= 0.01 && abs < 10000) {
     return value.toLocaleString('pt-BR', { maximumFractionDigits: precision });
   }
-  return value.toExponential(precision).replace('e', ' × 10^').replace('+', '');
+  const [mantissa, exponent] = value.toExponential(precision).split('e');
+  return `${mantissa.replace('.', ',')} × 10${toSuperscript(Number(exponent))}`;
+}
+
+const SUPERSCRIPT_DIGITS = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+
+function toSuperscript(exponent: number): string {
+  const digits = Array.from(String(Math.abs(exponent)), (digit) => SUPERSCRIPT_DIGITS[Number(digit)]).join('');
+  return exponent < 0 ? `⁻${digits}` : digits;
 }
 
 /**

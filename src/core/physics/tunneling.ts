@@ -134,7 +134,7 @@ function calculateScatteringAmplitudes(params: TunnelingParams, coefficients: Co
   const ik = complex(0, k);
   if (coefficients.regime === 'threshold') {
     const matrix = [
-      [complex(1), complex(-1), complex(-1), complex(0)],
+      [complex(1), complex(-1), complex(0), complex(0)],
       [scale(ik, -1), complex(0), complex(-1), complex(0)],
       [complex(0), complex(1), complex(a), scale(phase, -1)],
       [complex(0), complex(0), complex(1), multiply(scale(phase, -1), ik)],
@@ -148,7 +148,7 @@ function calculateScatteringAmplitudes(params: TunnelingParams, coefficients: Co
   const leftAtA = expComplex(left.re * a, left.im * a);
   const rightAtA = expComplex(right.re * a, right.im * a);
   const matrix = [
-    [complex(1), scale(left, -1), scale(right, -1), complex(0)],
+    [complex(1), complex(-1), complex(-1), complex(0)],
     [scale(ik, -1), scale(left, -1), scale(right, -1), complex(0)],
     [complex(0), leftAtA, rightAtA, scale(phase, -1)],
     [complex(0), multiply(left, leftAtA), multiply(right, rightAtA), scale(multiply(ik, phase), -1)],
